@@ -9,7 +9,7 @@ Development blocks:
     - shoot
 - Enemies:
     - enemy type A
-        - Beginner enemy; Zombie like; Walks towards player, slow meele attacks;
+        - Maybe???: Beginner enemy; Zombie like; Walks towards player, contact damage;
         - easy to jump kill;
     - enemy type B
         - easy to dash kill, hard to shoot kill, medium to jump kill;
@@ -27,7 +27,7 @@ Development blocks:
     - game over condition and restart
         - Lose all abilities
         - 
-- UI
+- Player status UI/VFX
     - teclas
     - damage taken feedback
     - Ability help text?
@@ -37,11 +37,10 @@ Development blocks:
     - damage done feedback
     - ambient effects?
 
-
-- Levels:
-    - Platform prefabs
-    - Obstacles/challenges:
-        - doors?
+- Levels: 
+    - Platform prefabs 
+    - Obstacles/challenges: (Motor coordination / reactive)
+        - doors? 
         - traps?
         - puzzles?
     - Visuals:

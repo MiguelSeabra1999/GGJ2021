@@ -18,6 +18,14 @@ using UnityEngine;
         };
 
 
+        private Dictionary<string, GameObject> KeysObjs = new Dictionary<string, GameObject>() {
+            {"Shoot", GameObject.Find("Key_Left_Click") },
+            {"Dodge", GameObject.Find("Key_Shift")},
+            {"Jump", GameObject.Find("Key_Space")}
+        };
+ 
+
+
 
         public void UpdateKeys()
         {
@@ -25,6 +33,10 @@ using UnityEngine;
             Keys["Shoot"] = Input.GetKeyDown(KeyCode.Mouse0) && KeysActive["Shoot"];
             Keys["Dodge"] = Input.GetKeyDown(KeyCode.LeftShift) && KeysActive["Dodge"];
             Keys["Jump"] = Input.GetKeyDown(KeyCode.Space) && KeysActive["Jump"];
+
+            foreach(string k in KeysActive.Keys){
+                KeysObjs[k].SetActive(KeysActive[k]);
+            }
 
         }
 
