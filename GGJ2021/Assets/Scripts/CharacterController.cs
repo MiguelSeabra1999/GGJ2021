@@ -33,6 +33,8 @@ public class CharacterController : MonoBehaviour
 
     public float invincibilityTime = 0.3f;
     public float blinkSpeed = 0.1f;
+    public float stompJumpForceMultiplier = 1.5f;
+    public float stompSpread = 0.4f;
 
     
     public Vector3 ModuleOffSet =new Vector3 (1,1,0);
@@ -155,6 +157,16 @@ public class CharacterController : MonoBehaviour
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
          isGrounded = false;
     }
+    private void Jump(float mod)
+    {
+        if(facingForward)
+            jumpDir = 1;
+        else    
+            jumpDir = -1;
+        
+         rb.AddForce(jump * jumpForce * mod, ForceMode2D.Impulse);
+         isGrounded = false;
+    }
 
     private void Dash()
     {
@@ -248,7 +260,7 @@ public class CharacterController : MonoBehaviour
             Enemy target = obj.GetComponent<Enemy>();
             target.HP-=damage;
             if(target.HP<=0){
-                Destroy(obj);
+                obj.SendMessage("Stomped");
             }
     }
 
@@ -378,7 +390,7 @@ public class CharacterController : MonoBehaviour
     IEnumerator InvincibilityLifeCycle()
     {
         isInvincible = true;
-        gameObject.layer = 12;
+        gameObject.layer = 14;
         float startTime = Time.time;
         float timePercent;
        // yield return new WaitForSeconds(invincibilityTime);
@@ -435,7 +447,25 @@ public class CharacterController : MonoBehaviour
         {
             SendDamage(hit.collider.gameObject,1);
             rb.velocity = Vector2.zero;
-            Jump();
+            Jump(stompJumpForceMultiplier);
+            return true;
+        }
+        hit = Physics2D.Raycast(transform.position + new Vector3(stompSpread,0,0), -Vector2.up, floorDist, mask);
+        Debug.DrawRay(transform.position+ new Vector3(stompSpread,0,0), -Vector3.up * floorDist,Color.yellow);
+        if(hit.collider != null && hit.collider.gameObject.layer == 9)
+        {
+            SendDamage(hit.collider.gameObject,1);
+            rb.velocity = Vector2.zero;
+            Jump(stompJumpForceMultiplier);
+            return true;
+        }
+        hit = Physics2D.Raycast(transform.position+ new Vector3(-1*stompSpread,0,0), -Vector2.up, floorDist, mask);
+        Debug.DrawRay(transform.position+ new Vector3(-1*stompSpread,0,0), -Vector3.up * floorDist,Color.yellow);
+        if(hit.collider != null && hit.collider.gameObject.layer == 9)
+        {
+            SendDamage(hit.collider.gameObject,1);
+            rb.velocity = Vector2.zero;
+            Jump(stompJumpForceMultiplier);
             return true;
         }
 
