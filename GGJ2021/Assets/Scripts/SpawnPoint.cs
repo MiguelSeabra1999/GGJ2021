@@ -10,6 +10,7 @@ public class SpawnPoint : MonoBehaviour
     public List<Enemy> EnemyPrefab = new List<Enemy>();
 
     public List<GameObject> SpawnPositions = new List<GameObject>();
+    int last_spawnpoint = 0;
 
     public int number_of_waves = 5;
     public int enemy_per_wave = 1;
@@ -116,14 +117,27 @@ public class SpawnPoint : MonoBehaviour
  
          return aList;
      }
+    private static System.Random rng = new System.Random();  
+    public  void Shuffle<T>(IList<T> list)  
+    {  
+        int n = list.Count;  
+        while (n > 1) {  
+            n--;  
+            int k = rng.Next(n + 1);  
+            T value = list[k];  
+            list[k] = list[n];  
+            list[n] = value;  
+        }  
+    }
     
 
     private Enemy suggestEnemy(float max_cost, out float cost){
         Enemy E = null;
-        List<Enemy> newList = Fisher_Yates_CardDeck_Shuffle(new List<Enemy>(EnemyPrefab));
+        List<Enemy> newList = new List<Enemy>(EnemyPrefab);
+        Shuffle<Enemy>(newList);
         cost = -1;
         foreach(Enemy en in newList){
-            if(en.spawning_cost<=max_cost) return en;
+            if(en && en.spawning_cost<=max_cost) return en;
         }
 
         return E;
@@ -177,6 +191,9 @@ public class SpawnPoint : MonoBehaviour
 
     private void SpawnEnemy(Enemy Enemy)
     {
-        enemies.Add(Instantiate(Enemy, transform.position, transform.rotation));
+        int next_spawn_point = (last_spawnpoint+1) % SpawnPositions.Count;
+        Debug.Log(next_spawn_point);
+        enemies.Add(Instantiate(Enemy, SpawnPositions[next_spawn_point].transform.position, transform.rotation));
+        last_spawnpoint = next_spawn_point;
     }
 }
