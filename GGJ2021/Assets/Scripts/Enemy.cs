@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Pathfinding.Seeker))]
 [RequireComponent(typeof(Pathfinding.AILerp))]
 [RequireComponent(typeof(Pathfinding.AIDestinationSetter))]
@@ -79,7 +82,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
-        //&& other.collider.gameObject.layer == 4
+        && other.collider.gameObject.layer != 7
         ){
             speed = speed*-1;
         }
