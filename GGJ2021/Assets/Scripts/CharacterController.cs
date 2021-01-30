@@ -23,6 +23,11 @@ public class CharacterController : MonoBehaviour
 
     public GameObject neckJoint;
     public GameObject armJoint;
+
+    public GameObject GunPoint;
+
+    public GameObject BulletPrefab;
+    public float BulletSpawnOffset = 50;
     void Start()
     {
         keyBindings = new KeyBindings(this.gameObject);
@@ -45,9 +50,15 @@ public class CharacterController : MonoBehaviour
                 this.transform.Translate(-1*dir.x  ,0,0);
         if(keyBindings.Keys["Jump"] && isGrounded)
             Jump();
+        if(keyBindings.Keys["Shoot"])
+            Shoot();
         UpdateLookDirection(lookAngle, lookingBack);
     }   
 
+    private void Shoot()
+    {
+        Instantiate(BulletPrefab, GunPoint.transform.position, GunPoint.transform.rotation);
+    }   
     private void Jump()
     {
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
@@ -56,7 +67,7 @@ public class CharacterController : MonoBehaviour
 
     private void UpdateLookDirection(float lookAngle, bool lookingBack)
     {
-        Debug.Log(lookingBack);
+        //Debug.Log(lookingBack);
         if(lookingBack)
         {
             if(facingForward)
@@ -85,7 +96,7 @@ public class CharacterController : MonoBehaviour
 
     private void Flip()
     {
-        Debug.Log("Flip");
+   //  Debug.Log("Flip");
         if(transform.rotation.eulerAngles.y == 0 )
         {
             transform.rotation =  Quaternion.Euler(0,180,0); 
