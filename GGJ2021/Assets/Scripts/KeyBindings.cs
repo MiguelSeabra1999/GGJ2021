@@ -122,4 +122,15 @@ using UnityEngine;
             }  
         }
 
+        public bool NoActiveKeys()
+        {
+            List<KeyValuePair<string, bool>> keys = KeysActive.ToList();
+            foreach(KeyValuePair<string, bool> pair in keys)
+            {
+                if(KeysActive[pair.Key])
+                    return false;
+            }
+            return true;
+        }
+
     }

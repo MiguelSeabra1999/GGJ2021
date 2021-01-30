@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviour
 
     private KeyBindings keyBindings;
     private Rigidbody2D rb;
+    private Collider2D coll;
     public float speed;
     public Vector3 jump;
     public float jumpForce = 2.0f;
@@ -30,6 +31,10 @@ public class CharacterController : MonoBehaviour
     public float shootingCooldown = 0.3f;
     public float dashingCooldown = 0.3f;
 
+    public float invincibilityTime = 0.3f;
+    public float blinkSpeed = 0.1f;
+
+    
     public Vector3 ModuleOffSet =new Vector3 (1,1,0);
     public float moduleJumpForce = 1;
 
@@ -45,6 +50,8 @@ public class CharacterController : MonoBehaviour
     public bool canShoot = true;
     public bool canDash = true;
 
+    public bool isInvincible;
+
     public GameObject neckJoint;
     public GameObject armJoint;
 
@@ -53,13 +60,18 @@ public class CharacterController : MonoBehaviour
     public GameObject BulletPrefab;
     public GameObject ModulePrefab;
     public float BulletSpawnOffset = 50;
+
+    [HideInInspector]public SpriteRenderer[] sprites;
     void Start()
     {
         keyBindings = new KeyBindings(this.gameObject);
         rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         jump = new Vector3(0.0f, 2.0f, 0.0f);
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         postProcessor = GameObject.Find("PostProcessor");
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        Debug.Log(sprites.Length);
     }
 
     // Update is called once per frame
@@ -161,16 +173,12 @@ public class CharacterController : MonoBehaviour
         {
                 if(dashingDir.y <= 0)
                 {
+                    if(facingForward)
                     dashingDir = new Vector3(1,0,0);
-                }else if(!facingForward)
-                    dashingDir = new Vector3(dashingDir.x*-1,dashingDir.y,0);
+                    else
+                    dashingDir = new Vector3(-1,0,0);
+                }
   
-        }else
-        {
-           
-            if(!facingForward)
-                dashingDir = new Vector3(dashingDir.x*-1,dashingDir.y,0);
-
         }
     
         yield return new WaitForSeconds(dashTime);
@@ -205,11 +213,14 @@ public class CharacterController : MonoBehaviour
             SendDamage(other, 0.5f);
             return;
         }
+
+        if(isInvincible) return;
             
         Debug.Log("ouch");
         PostProcessorInterface.DamageEffect(0.4f);
         ModuleType type = keyBindings.RemoveRandomKey() ;
-        if(type == ModuleType.EMPTY)
+        this.StartCoroutine(InvincibilityLifeCycle());
+        if(type == ModuleType.EMPTY || keyBindings.NoActiveKeys())
         {
             Destroy(gameObject);
         }else
@@ -363,6 +374,40 @@ public class CharacterController : MonoBehaviour
         return false;
     }
 
+
+    IEnumerator InvincibilityLifeCycle()
+    {
+        isInvincible = true;
+        gameObject.layer = 12;
+        float startTime = Time.time;
+        float timePercent;
+       // yield return new WaitForSeconds(invincibilityTime);
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        while(Time.time < startTime + invincibilityTime)
+        {
+            timePercent =(Time.time - startTime)  / invincibilityTime;
+            SetSpriteActive(false, sprites);
+            yield return new WaitForSeconds(blinkSpeed);
+            SetSpriteActive(true,sprites);
+            yield return new WaitForSeconds(blinkSpeed);
+            
+        }
+
+        isInvincible = false;
+        gameObject.layer =7;
+        //coll.enabled = true;
+    }
+    
+    private void SetSpriteActive(bool state, SpriteRenderer[] sprites)
+    {
+        Debug.Log(sprites.Length);
+  
+        foreach(SpriteRenderer sprite in sprites)
+        {
+            if(sprite != null)
+            sprite.enabled = state;
+        }
+    }
     private bool CheckGround()
     {
        //return true;
@@ -381,6 +426,7 @@ public class CharacterController : MonoBehaviour
     private bool CheckStomp()
     {
        //return true;
+        if(isInvincible)return false;
         float floorDist = 1.3f;
         LayerMask mask = LayerMask.GetMask("Enemy");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, floorDist, mask);
