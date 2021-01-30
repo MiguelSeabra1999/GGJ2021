@@ -2,6 +2,13 @@
 
 
 Development blocks:
+
+- Feels:
+    - Eerie
+    - Vastness / Void / Loneliness
+    - 
+
+
 - Actions:
     - movement
     - jump
