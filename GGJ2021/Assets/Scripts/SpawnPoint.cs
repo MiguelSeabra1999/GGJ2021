@@ -32,6 +32,8 @@ public class SpawnPoint : MonoBehaviour
 
     public bool activate_on_start = false;
 
+    public bool wait_for_wave_clear = false;
+
 
 
     // Start is called before the first frame update
@@ -72,8 +74,10 @@ public class SpawnPoint : MonoBehaviour
 
             state = SpawnState.WAITING;
 
-            // wait until all enemies died (are destroyed)
-            yield return new WaitWhile(EnemyisAlive);
+            if(!wait_for_wave_clear){
+                // wait until all enemies died (are destroyed)
+                yield return new WaitWhile(EnemyisAlive);
+            }
 
             state = SpawnState.COUNTING;
 
