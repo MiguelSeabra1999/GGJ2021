@@ -17,26 +17,22 @@ using UnityEngine;
             {"Jump", true }
         };
 
-
-        private Dictionary<string, GameObject> KeysObjs = new Dictionary<string, GameObject>() {
-            {"Shoot", GameObject.Find("Key_Left_Click") },
-            {"Dodge", GameObject.Find("Key_Shift")},
-            {"Jump", GameObject.Find("Key_Space")}
-        };
- 
+        private float cameraDif;
+        private Camera camera;
+        GameObject player;
 
 
-
+        public KeyBindings(GameObject player)
+        {
+            this.player = player;
+            camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
         public void UpdateKeys()
         {
             // FIXME movement keys are unchangeable(forced as wasd and arrows); mousewheel scrolls are not supported
             Keys["Shoot"] = Input.GetKeyDown(KeyCode.Mouse0) && KeysActive["Shoot"];
             Keys["Dodge"] = Input.GetKeyDown(KeyCode.LeftShift) && KeysActive["Dodge"];
             Keys["Jump"] = Input.GetKeyDown(KeyCode.Space) && KeysActive["Jump"];
-
-            foreach(string k in KeysActive.Keys){
-                KeysObjs[k].SetActive(KeysActive[k]);
-            }
 
         }
 
@@ -46,6 +42,26 @@ using UnityEngine;
             //float vertical = Input.GetAxisRaw("Vertical");
             return new Vector3(horizontal, 0f, 0f).normalized;
         }
+
+        public (float, bool)  GetLookAngle()
+        {
+            float mouseX = Input.mousePosition.x;
+            float mouseY = Input.mousePosition.y;
+
+            Vector3 cameraPositionInWorld =  camera.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cameraDif));
+            cameraPositionInWorld = new Vector3(cameraPositionInWorld.x, cameraPositionInWorld.y,0);
+            Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y,0);
+            Vector3 dir = (cameraPositionInWorld - playerPos).normalized;
+
+            float cos = Mathf.Acos(dir.x)*Mathf.Rad2Deg;
+            float sin = Mathf.Asin(dir.y)*Mathf.Rad2Deg;
+            if(dir.x >0)
+                return (sin, false);
+            else    
+                return (sin,true);
+
+        }
+
 
 
     }
