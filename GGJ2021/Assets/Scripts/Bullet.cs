@@ -16,4 +16,15 @@ public class Bullet : MonoBehaviour
     {
         this.transform.Translate(0,-1*speed*Time.deltaTime,0);
     }
+    
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+
+         if(other.gameObject.layer!=7)
+        Destroy(gameObject);    
+    }
+  /*  private void OnCollisionEnter2D(Collision other) {
+        Debug.Log("Boom");
+        Destroy(gameObject);
+    }*/
 }

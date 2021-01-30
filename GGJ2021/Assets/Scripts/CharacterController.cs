@@ -110,7 +110,12 @@ public class CharacterController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other) 
     {
+        Debug.Log("Ground");
         isGrounded = true;
     }
+
+   /* private void OnTriggerEnter(Collider other) {
+        Debug.Log("Ouch");
+    }*/
 
 }
