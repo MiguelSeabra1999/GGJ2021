@@ -8,7 +8,8 @@ public class CharacterController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-
+    private Camera m_camera;
+    public bool camera_follow = true;
 
     private KeyBindings keyBindings;
     private Rigidbody2D rb;
@@ -41,11 +42,15 @@ public class CharacterController : MonoBehaviour
         keyBindings = new KeyBindings(this.gameObject);
         rb = GetComponent<Rigidbody2D>();
         jump = new Vector3(0.0f, 2.0f, 0.0f);
+        m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(camera_follow)
+            m_camera.transform.position = new Vector3 (transform.position.x + 0, transform.position.y + 0, m_camera.transform.position.z); // Camera follows the player with specified offset position
+        
         keyBindings.UpdateKeys();
         (float, bool) LookInfo = keyBindings.GetLookAngle();
         float lookAngle = LookInfo.Item1;
@@ -75,7 +80,7 @@ public class CharacterController : MonoBehaviour
 
     private void UpdateMovement(Vector3 dir)
     {
-        Debug.Log(dir.x);
+        //Debug.Log(dir.x);
             if(!isGrounded && jumpDir == 1 && dir.x <0   ||  !isGrounded && jumpDir == -1 && dir.x >0 )
                  dir = dir*midairDirecitonChangeSpeed;
 
@@ -190,6 +195,19 @@ public class CharacterController : MonoBehaviour
         Debug.Log("Ground");
         
 
+            if(other.gameObject.layer ==10)
+                TouchGround();
+            if(other.gameObject.layer ==8)
+                TouchWall();
+    }
+
+    /// <summary>
+    /// Sent each frame where a collider on another object is touching
+    /// this object's collider (2D physics only).
+    /// </summary>
+    /// <param name="other">The Collision2D data associated with this collision.</param>
+    void OnCollisionStay2D(Collision2D other)
+    {
             if(other.gameObject.layer ==10)
                 TouchGround();
             if(other.gameObject.layer ==8)

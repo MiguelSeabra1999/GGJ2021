@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     public bool attacking_player=false;
     public float speed = 3f;
 
-    public float HP = 100f;
+    public float HP = 1f;
 
 
 

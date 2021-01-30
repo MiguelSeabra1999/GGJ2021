@@ -498,8 +498,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  jump: {x: 0, y: 3, z: 0}
-  jumpForce: 3
+  jump: {x: 0, y: 5, z: 0}
+  jumpForce: 5
   aimSpeed: 15
   dashTime: 0.15
   dashSpeedup: 3

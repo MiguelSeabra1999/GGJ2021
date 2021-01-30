@@ -20,9 +20,16 @@ public class Bullet : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
+        if(other.gameObject.layer!=7) Destroy(gameObject);    
 
-         if(other.gameObject.layer!=7)
-        Destroy(gameObject);    
+        if(other.gameObject.layer == 9) {
+            Enemy target = other.gameObject.GetComponent<Enemy>();
+            target.HP-=damage;
+            if(target.HP<=0){
+                Destroy(target.gameObject);
+            }
+        }
+
     }
   /*  private void OnCollisionEnter2D(Collision other) {
         Debug.Log("Boom");
