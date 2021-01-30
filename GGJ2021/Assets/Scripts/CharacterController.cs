@@ -17,8 +17,13 @@ public class CharacterController : MonoBehaviour
     public float jumpForce = 2.0f;
 
     public float aimSpeed = 15;
+    public float dashTime = 0.5f;
+    public float dashSpeedup = 1.5f;
+
+    public int dashingDir = 1;
     
     public bool isGrounded = true;
+    public bool dashing = false;
     public bool facingForward = true;
 
     public GameObject neckJoint;
@@ -43,15 +48,26 @@ public class CharacterController : MonoBehaviour
         float lookAngle = LookInfo.Item1;
         bool lookingBack = LookInfo.Item2;
         Vector3 dir = keyBindings.GetDirection() *speed * Time.deltaTime;
+
+        if(dashing)
+        {
+            UpdateDash();
+            return;
+        }
+
         if(dir.magnitude > 0.01f)
             if(facingForward)
                 this.transform.Translate(dir.x  ,0,0);
             else
                 this.transform.Translate(-1*dir.x  ,0,0);
+
+
         if(keyBindings.Keys["Jump"] && isGrounded)
             Jump();
         if(keyBindings.Keys["Shoot"])
             Shoot();
+        if(keyBindings.Keys["Dodge"])
+            Dash();
         UpdateLookDirection(lookAngle, lookingBack);
     }   
 
@@ -63,6 +79,29 @@ public class CharacterController : MonoBehaviour
     {
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
          isGrounded = false;
+    }
+
+    private void Dash()
+    {
+      //  Debug.Log("DashStart");
+        this.StartCoroutine(Dashing());
+    }
+
+    IEnumerator Dashing()
+    {
+  //      Debug.Log("coroutine");
+        this.dashing = true;
+
+            dashingDir = 1;
+    
+        yield return new WaitForSeconds(dashTime);
+        this.dashing = false;
+    }
+
+    private void UpdateDash()
+    {
+      //  Debug.Log("update");
+        this.transform.Translate(dashingDir * speed * Time.deltaTime * dashSpeedup,0,0);
     }
 
     private void UpdateLookDirection(float lookAngle, bool lookingBack)
@@ -108,11 +147,31 @@ public class CharacterController : MonoBehaviour
             facingForward = true;
         }
     }
+
+    private void TouchGround()
+    {
+        isGrounded = true;
+    }
+
+    private void TouchWall()
+    {
+        dashing = false;
+        
+    }
+
+
     private void OnCollisionEnter2D(Collision2D other) 
     {
         Debug.Log("Ground");
-        isGrounded = true;
+        
+
+            if(other.gameObject.layer ==10)
+                TouchGround();
+            if(other.gameObject.layer ==8)
+                TouchWall();
     }
+
+
 
    /* private void OnTriggerEnter(Collider other) {
         Debug.Log("Ouch");
