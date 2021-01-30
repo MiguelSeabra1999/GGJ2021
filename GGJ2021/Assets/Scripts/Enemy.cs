@@ -86,7 +86,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
-        && other.collider.gameObject.layer != 7
+        && other.collider.gameObject.layer == 8
         ){
             speed = speed*-1;
         }
