@@ -442,4 +442,9 @@ public class CharacterController : MonoBehaviour
         return false;
     }
 
+    public bool CheckKeybindings(string key)
+    {
+        return keyBindings.KeysActive[key];
+    }
+
 }

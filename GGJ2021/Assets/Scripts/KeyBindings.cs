@@ -77,8 +77,32 @@ using UnityEngine;
            KeysActive[keyCode] = newState;
         }
 
+        private bool CanRemove(string key)
+        {
+            if(key == "Movement")
+            {
+                if(!KeysActive["Dodge"])
+                    return false;
+  
+                
+            }
+            if(key == "Dodge")
+            {
+                if(!KeysActive["Movement"])
+                    return false;
+                
+            }
+            if(key != "Movement" && KeysActive["Movement"] && CountActiveKeys() == 2)
+                return false;
+            
+            return true;
+        }
+
         public ModuleType RemoveRandomKey()
         {
+            ModuleType savedType = ModuleType.EMPTY;
+            string savedKey = "";
+            ModuleType returnType =  ModuleType.EMPTY;
             List<KeyValuePair<string, bool>> keys = KeysActive.ToList();
             Shuffle(keys);
 
@@ -86,26 +110,27 @@ using UnityEngine;
             {
                 if(pair.Value)
                 {
-                    KeysActive[pair.Key] = false;
-                    switch(pair.Key)
-                        {
-                            case "Movement":
-                                return ModuleType.MOVEMENT;
-                       
-                            case "Dodge":
-                                return ModuleType.DASH;
-                         
-                            case "Jump":
-                                return ModuleType.JUMP;
-                          
-                            case "Shoot":
-                               return ModuleType.SHOOT;
-                           
-                        }
-                    return ModuleType.EMPTY;
+                    if(CanRemove(pair.Key))
+                    {
+                        KeysActive[pair.Key] = false;
+                        returnType = GetType(pair.Key);
+                        break;
+                    }
+                    else
+                    {
+                        savedType = GetType(pair.Key);
+                        savedKey = pair.Key;
+                    }
                 }
             }
-            return ModuleType.EMPTY;
+            if(savedType != ModuleType.EMPTY && returnType == ModuleType.EMPTY)
+            {
+                KeysActive[savedKey] = false;
+                return savedType;
+            }
+
+
+            return returnType;
             
         }
 
@@ -122,6 +147,30 @@ using UnityEngine;
             }  
         }
 
+        private ModuleType GetType(string code)
+        {
+            ModuleType returnType = ModuleType.EMPTY;
+            switch(code)
+                        {
+                                case "Movement":
+                                    returnType = ModuleType.MOVEMENT;
+                                    break;
+                        
+                                case "Dodge":
+                                    returnType =  ModuleType.DASH;
+                                    break;
+                            
+                                case "Jump":
+                                    returnType =  ModuleType.JUMP;
+                                    break;
+                            
+                                case "Shoot":
+                                returnType =  ModuleType.SHOOT;
+                                break;
+                            
+                        }
+            return returnType;
+        }
         public bool NoActiveKeys()
         {
             List<KeyValuePair<string, bool>> keys = KeysActive.ToList();
@@ -131,6 +180,18 @@ using UnityEngine;
                     return false;
             }
             return true;
+        }
+
+        public int CountActiveKeys()
+        {
+            int count = 0;
+            List<KeyValuePair<string, bool>> keys = KeysActive.ToList();
+            foreach(KeyValuePair<string, bool> pair in keys)
+            {
+                if(KeysActive[pair.Key])
+                    count++;
+            }
+            return count;
         }
 
     }
