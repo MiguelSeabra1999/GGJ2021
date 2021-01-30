@@ -10,12 +10,16 @@ using UnityEngine;
 [RequireComponent(typeof(Pathfinding.AIDestinationSetter))]
 public class Enemy : MonoBehaviour
 {
-    public  enum behaviour_type {ALWAYS_FORWARD, PATROL};
+    public  enum behaviour_type {ALWAYS_FORWARD, PATROL, TURRET};
 
-    public Enemy.behaviour_type behaviour = behaviour_type.PATROL;
+    public Enemy.behaviour_type behaviour = behaviour_type.ALWAYS_FORWARD;
 
     public bool attacking_player=false;
     public float speed = 3f;
+
+    public float HP = 100f;
+
+
 
     // behaviour_type.PATROL
     protected Transform[] points;
