@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviour: 0
   attacking_player: 0
-  speed: 3
+  speed: 1.5
   HP: 1
   Path_list_root: {fileID: 0}
 --- !u!114 &5937751143581917833
@@ -202,7 +202,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1

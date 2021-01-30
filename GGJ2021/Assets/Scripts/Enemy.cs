@@ -48,6 +48,9 @@ public class Enemy : MonoBehaviour
         if(behaviour == behaviour_type.PATROL){
             GotoNextPoint();
         }
+
+        if(Random.Range(0f,1f) > 0.5f)
+            speed = speed*-1;
     }
 
 
@@ -86,10 +89,13 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
-        && other.collider.gameObject.layer == 8
+        && (other.collider.gameObject.layer == 8 || other.collider.gameObject.layer == 7)
         ){
             speed = speed*-1;
         }
+
+        if(other.collider.gameObject.layer == 7)
+            other.collider.gameObject.SendMessage("Damage", gameObject);
         
     }
 

@@ -47,8 +47,8 @@ MonoBehaviour:
     type: 3}
   number_of_waves: 5
   enemy_per_wave: 3
-  type: 0
-  timeBetweenWaves: 5
+  type: 1
+  timeBetweenWaves: 1.5
   countDown: 2
   state: 1
   activate_on_start: 1

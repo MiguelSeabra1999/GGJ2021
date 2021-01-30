@@ -17,6 +17,10 @@ public class Feet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
+        Debug.Log("FeetTouch");
         transform.parent.gameObject.SendMessage("TouchWithFeet", other.gameObject.layer);
+    }
+    private void OnCollisionEnter2D(Collision2D other) {
+         Debug.Log("FeetTouch");
     }
 }

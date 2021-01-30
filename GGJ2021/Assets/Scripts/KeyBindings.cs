@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
     public class KeyBindings
     {
+        private static System.Random rng = new System.Random();  
         public Dictionary<string, bool> Keys = new Dictionary<string, bool>() {
             {"Shoot", false },
             {"Dodge", false },
@@ -14,7 +16,8 @@ using UnityEngine;
         public Dictionary<string, bool> KeysActive = new Dictionary<string, bool>() {
             {"Shoot", true },
             {"Dodge", true },
-            {"Jump", true }
+            {"Jump", true },
+            {"Movement", true }
         };
 
         private float cameraDif;
@@ -40,10 +43,12 @@ using UnityEngine;
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
             //float vertical = Input.GetAxisRaw("Vertical");
-            return new Vector3(horizontal, 0f, 0f).normalized;
+            if(KeysActive["Movement"])
+                return new Vector3(horizontal, 0f, 0f).normalized;
+            return Vector3.zero;
         }
 
-        public (float, bool)  GetLookAngle()
+        public Vector3 GetLookDir()
         {
             float mouseX = Input.mousePosition.x;
             float mouseY = Input.mousePosition.y;
@@ -52,7 +57,12 @@ using UnityEngine;
             cameraPositionInWorld = new Vector3(cameraPositionInWorld.x, cameraPositionInWorld.y,0);
             Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y,0);
             Vector3 dir = (cameraPositionInWorld - playerPos).normalized;
+            return dir;
+        }
+        public (float, bool)  GetLookAngle()
+        {
 
+            Vector3 dir = GetLookDir();
             float cos = Mathf.Acos(dir.x)*Mathf.Rad2Deg;
             float sin = Mathf.Asin(dir.y)*Mathf.Rad2Deg;
             if(dir.x >0)
@@ -62,6 +72,54 @@ using UnityEngine;
 
         }
 
+        public void SetActiveKeys(string keyCode, bool newState)
+        {
+           KeysActive[keyCode] = newState;
+        }
 
+        public ModuleType RemoveRandomKey()
+        {
+            List<KeyValuePair<string, bool>> keys = KeysActive.ToList();
+            Shuffle(keys);
+
+            foreach(KeyValuePair<string, bool> pair in keys)
+            {
+                if(pair.Value)
+                {
+                    KeysActive[pair.Key] = false;
+                    switch(pair.Key)
+                        {
+                            case "Movement":
+                                return ModuleType.MOVEMENT;
+                       
+                            case "Dodge":
+                                return ModuleType.DASH;
+                         
+                            case "Jump":
+                                return ModuleType.JUMP;
+                          
+                            case "Shoot":
+                               return ModuleType.SHOOT;
+                           
+                        }
+                    return ModuleType.EMPTY;
+                }
+            }
+            return ModuleType.EMPTY;
+            
+        }
+
+
+        public  void Shuffle<T>(IList<T> list)  
+        {  
+            int n = list.Count;  
+            while (n > 1) {  
+                n--;  
+                int k = rng.Next(n + 1);  
+                T value = list[k];  
+                list[k] = list[n];  
+                list[n] = value;  
+            }  
+        }
 
     }
