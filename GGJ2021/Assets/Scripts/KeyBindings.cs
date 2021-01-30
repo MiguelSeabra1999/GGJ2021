@@ -25,7 +25,7 @@ using UnityEngine;
         public KeyBindings(GameObject player)
         {
             this.player = player;
-            camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
         public void UpdateKeys()
         {
