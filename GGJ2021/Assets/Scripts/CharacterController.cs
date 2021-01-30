@@ -180,6 +180,7 @@ public class CharacterController : MonoBehaviour
 
     private void TouchGround()
     {
+        Debug.Log("Ground");
         isGrounded = true;
     }
 
@@ -190,31 +191,25 @@ public class CharacterController : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D other) 
+    private void OnCollisionEnter2D(Collision2D col) 
     {
-        Debug.Log("Ground");
         
-
-            if(other.gameObject.layer ==10)
-                TouchGround();
-            if(other.gameObject.layer ==8)
+        
+            if(col.otherCollider.gameObject.name == "Feet")
+                if(col.gameObject.layer ==10)
+                    TouchGround();
+            if(col.gameObject.layer ==8)
                 TouchWall();
     }
 
-    /// <summary>
-    /// Sent each frame where a collider on another object is touching
-    /// this object's collider (2D physics only).
-    /// </summary>
-    /// <param name="other">The Collision2D data associated with this collision.</param>
-    void OnCollisionStay2D(Collision2D other)
+
+
+    private void TouchWithFeet(int layerCode)
     {
-            if(other.gameObject.layer ==10)
-                TouchGround();
-            if(other.gameObject.layer ==8)
-                TouchWall();
+        Debug.Log("Touvhing");
+        if(layerCode ==10)
+            TouchGround();
     }
-
-
 
    /* private void OnTriggerEnter(Collider other) {
         Debug.Log("Ouch");
