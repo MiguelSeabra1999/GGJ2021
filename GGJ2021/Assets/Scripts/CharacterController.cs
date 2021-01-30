@@ -20,7 +20,10 @@ public class CharacterController : MonoBehaviour
     public float dashTime = 0.5f;
     public float dashSpeedup = 1.5f;
 
+    public float midairDirecitonChangeSpeed = 0.3f;
+
     public int dashingDir = 1;
+    public int jumpDir = 1;
     
     public bool isGrounded = true;
     public bool dashing = false;
@@ -55,11 +58,10 @@ public class CharacterController : MonoBehaviour
             return;
         }
 
+        
         if(dir.magnitude > 0.01f)
-            if(facingForward)
-                this.transform.Translate(dir.x  ,0,0);
-            else
-                this.transform.Translate(-1*dir.x  ,0,0);
+            UpdateMovement(dir);
+
 
 
         if(keyBindings.Keys["Jump"] && isGrounded)
@@ -71,12 +73,35 @@ public class CharacterController : MonoBehaviour
         UpdateLookDirection(lookAngle, lookingBack);
     }   
 
+    private void UpdateMovement(Vector3 dir)
+    {
+        Debug.Log(dir.x);
+            if(!isGrounded && jumpDir == 1 && dir.x <0   ||  !isGrounded && jumpDir == -1 && dir.x >0 )
+                 dir = dir*midairDirecitonChangeSpeed;
+
+
+            if(facingForward)
+            {
+         
+                this.transform.Translate(dir.x  ,0,0);
+            }
+            else
+            {
+
+                this.transform.Translate(-1*dir.x  ,0,0);
+            }
+    }
     private void Shoot()
     {
         Instantiate(BulletPrefab, GunPoint.transform.position, GunPoint.transform.rotation);
     }   
     private void Jump()
     {
+        if(facingForward)
+            jumpDir = 1;
+        else    
+            jumpDir = -1;
+        
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
          isGrounded = false;
     }
