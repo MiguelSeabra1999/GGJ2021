@@ -26,16 +26,16 @@
     - Beginner enemy;
     - Walks always forward (reversing direction when hitting a wall);
     - contact damage;
-    - easy to kill swarms with dash; hard to shoot kill;
+    - easy to kill swarms with dash; hard to kill with Shoot;
     - More likely to drop movement and dash ability;
 - Patrol Drone
-    - medium to dash kill, easy to shoot kill, medium to jump kill;
+    - easy to kill with Shoot;
     - More likely to drop jump ability;
 - Turret
-    - hard to dash kill, easy to shoot kill, medium to jump kill;
+    - hard to kill with Dash, easy to kill with Shoot;
     - More likely to drop shooting ability;
 - Large Crab (tentative)
-    - hard to dash kill, medium to shoot kill, hard to jump kill;
+    - hard to kill with Dash, hard to kill with Jump;
     - Drops a random ability that the player is missing;
 
 ## Events:
