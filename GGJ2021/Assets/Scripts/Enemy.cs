@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
 
     public float HP = 1f;
 
+    public float spawning_cost = 1f;
+
 
     private CharacterController player;
 
@@ -60,6 +62,23 @@ public class Enemy : MonoBehaviour
         }
 
         if(behaviour == behaviour_type.PATROL){
+            // Random patrol path
+            if(Path_list_root==null){
+                List<GameObject> list = new List<GameObject>();
+                list.Add(GameObject.Find("Patrol_variant_1"));
+                list.Add(GameObject.Find("Patrol_variant_2"));
+                list = Fisher_Yates_CardDeck_Shuffle(list);
+                if(list[0]!=null){
+                    Path_list_root = list[0];
+                    if(Path_list_root != null){
+                        points = new Transform[Path_list_root.transform.childCount];
+                        for(int i =0; i<Path_list_root.transform.childCount; i++){
+                            points[i] = Path_list_root.transform.GetChild(i);
+                        }
+                    }
+
+                }
+            }
             GotoNextPoint();
         }
 
@@ -69,6 +88,25 @@ public class Enemy : MonoBehaviour
         last_shoot_time = Time.realtimeSinceStartup-shootingCooldown;
     }
 
+     public static List<GameObject> Fisher_Yates_CardDeck_Shuffle (List<GameObject>aList) {
+ 
+         System.Random _random = new System.Random ();
+ 
+         GameObject myGO;
+ 
+         int n = aList.Count;
+         for (int i = 0; i < n; i++)
+         {
+             // NextDouble returns a random number between 0 and 1.
+             // ... It is equivalent to Math.random() in Java.
+             int r = i + (int)(_random.NextDouble() * (n - i));
+             myGO = aList[r];
+             aList[r] = aList[i];
+             aList[i] = myGO;
+         }
+ 
+         return aList;
+     }
 
     // Only if behaviour_type.PATROL
     void GotoNextPoint() {

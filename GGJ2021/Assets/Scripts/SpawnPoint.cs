@@ -7,7 +7,9 @@ using System.Collections.Generic;
 public class SpawnPoint : MonoBehaviour
 {
 
-    public Enemy EnemyPrefab;
+    public List<Enemy> EnemyPrefab = new List<Enemy>();
+
+    public List<GameObject> SpawnPositions = new List<GameObject>();
 
     public int number_of_waves = 5;
     public int enemy_per_wave = 1;
@@ -74,7 +76,7 @@ public class SpawnPoint : MonoBehaviour
 
             state = SpawnState.WAITING;
 
-            if(!wait_for_wave_clear){
+            if(wait_for_wave_clear){
                 // wait until all enemies died (are destroyed)
                 yield return new WaitWhile(EnemyisAlive);
             }
@@ -95,28 +97,86 @@ public class SpawnPoint : MonoBehaviour
         return enemies.Count > 0;
     }
 
-    private IEnumerator SpawnWave()
+     public static List<Enemy> Fisher_Yates_CardDeck_Shuffle (List<Enemy>aList) {
+ 
+         System.Random _random = new System.Random ();
+ 
+         Enemy myGO;
+ 
+         int n = aList.Count;
+         for (int i = 0; i < n; i++)
+         {
+             // NextDouble returns a random number between 0 and 1.
+             // ... It is equivalent to Math.random() in Java.
+             int r = i + (int)(_random.NextDouble() * (n - i));
+             myGO = aList[r];
+             aList[r] = aList[i];
+             aList[i] = myGO;
+         }
+ 
+         return aList;
+     }
+    
+
+    private Enemy suggestEnemy(float max_cost, out float cost){
+        Enemy E = null;
+        List<Enemy> newList = Fisher_Yates_CardDeck_Shuffle(new List<Enemy>(EnemyPrefab));
+        cost = -1;
+        foreach(Enemy en in newList){
+            if(en.spawning_cost<=max_cost) return en;
+        }
+
+        return E;
+    }
+
+
+    private List<Enemy> Wave()
     {   
+        List<Enemy> enemies_to_spawn = new List<Enemy>();
+
+
         if(type == SpawnType.FIXED_NUMBER){
             for (int i = 0; i < enemy_per_wave; i++)
             {
-                SpawnEnemy();
-                yield return new WaitForSeconds(0.5f);
+                enemies_to_spawn.Add(EnemyPrefab[0]);
             }
         } else
         if(type == SpawnType.INFINITE_GROWTH) {
-            waveIndex++;
+            float max_cost =waveIndex;
             for (int i = 0; i < waveIndex; i++)
             {
-                SpawnEnemy();
-                yield return new WaitForSeconds(0.5f);
+                float cost;
+                Enemy en = suggestEnemy(max_cost, out cost);
+                if(en){
+                    enemies_to_spawn.Add(en);
+                    max_cost-=cost;
+
+                }
             }
         }
+        return enemies_to_spawn;
+    }
+
+
+    private IEnumerator SpawnWave()
+    {   
+        if(type == SpawnType.INFINITE_GROWTH) {
+            waveIndex++;
+        }
+
+        List<Enemy> enemies_to_spawn = Wave();
+
+        foreach (Enemy e in enemies_to_spawn)
+        {
+            SpawnEnemy(e);
+            yield return new WaitForSeconds(0.5f);
+        }
+
 
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(Enemy Enemy)
     {
-        enemies.Add(Instantiate(EnemyPrefab, transform.position, transform.rotation));
+        enemies.Add(Instantiate(Enemy, transform.position, transform.rotation));
     }
 }
