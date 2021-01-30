@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb00e4a34be72564b8f47c92cf3d4570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+  EnemyPrefab: {fileID: 3635070705279884755, guid: a3c5120a0f5cf644db2465eab2ab6e9a,
     type: 3}
   number_of_waves: 5
   enemy_per_wave: 3
