@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviour: 0
   attacking_player: 0
-  speed: 3
+  speed: 1.5
   HP: 1
   Path_list_root: {fileID: 0}
 --- !u!114 &5937751143581917833

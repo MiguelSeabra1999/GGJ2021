@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 7406849682395454812}
   m_Layer: 7
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -497,6 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85af8a0b3f8e5244be30c8b1367ba1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera_follow: 1
   speed: 7
   jump: {x: 0, y: 5, z: 0}
   jumpForce: 5
