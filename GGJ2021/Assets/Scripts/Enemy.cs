@@ -246,8 +246,7 @@ public class Enemy : MonoBehaviour
                         Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
                         //TODO: instantiate laser and deal damage to player
-                        GameObject dud = null;
-                        player.SendMessage("Damage",dud);
+                        player.gameObject.SendMessage("Damage");
                         
                         laser.m_active = true;
                     }
