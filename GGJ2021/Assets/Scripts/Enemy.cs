@@ -51,9 +51,11 @@ public class Enemy : MonoBehaviour
 
     public GameObject EnemyBulletPrefab;
 
+    private Rigidbody2D rb;
+
     void Start () {
 
-
+        rb = GetComponent<Rigidbody2D>();
         GameObject P = GameObject.FindGameObjectWithTag("Player");
         if(P)
             player = P.GetComponent<CharacterController>();
@@ -89,6 +91,7 @@ public class Enemy : MonoBehaviour
                 }
             }
             GotoNextPoint();
+            GetComponentInChildren<DroneSpriteInterface>().Init();
         }
 
         if(Random.Range(0f,1f) > 0.5f)
@@ -143,8 +146,15 @@ public class Enemy : MonoBehaviour
     void FixedUpdate () {
         // Choose the next destination point when the agent gets
         // close to the current one.
-        if(HP<=0)return;
+        if(HP<=0)
+        {
+           // if()
+            return;
+        }
+            
         if (behaviour == behaviour_type.PATROL){
+            
+
             ai_lerp.speed = speed;
             if(agent.target != null && Vector3.Distance(transform.position, agent.target.position) < 2f){
                 GotoNextPoint();
@@ -268,9 +278,18 @@ public class Enemy : MonoBehaviour
 
     private void Stomped()
     {
-        if(behaviour == behaviour_type.ALWAYS_FORWARD)
+        if(behaviour == behaviour_type.ALWAYS_FORWARD || behaviour ==behaviour_type.PATROL)
         {
             gameObject.layer = 13;
+            if(behaviour ==behaviour_type.PATROL)
+            {
+                  ai_lerp.speed = 0;
+                  ai_lerp.enabled = false;
+                  agent.enabled = false;
+                transform.rotation = Quaternion.Euler(0,0,0);
+                
+            }
+
             animator.SetTrigger("Stomp");
             Invoke("Die",0.7f);
         }
@@ -278,11 +297,12 @@ public class Enemy : MonoBehaviour
 
     private void GetShot()
     {
-        Instantiate(SmokePrefab, transform.position, Quaternion.identity);
+    
         Die();
     }
     private void Die()
     {
+        Instantiate(SmokePrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

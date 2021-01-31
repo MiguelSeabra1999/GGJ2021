@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - secondCam
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Enemy_Bullet
   - DeadEnemy
   - InvinciblePlayer
-  - 
+  - Background
   - 
   - 
   - 
