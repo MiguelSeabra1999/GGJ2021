@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
     private float shootingCooldown = 1f;
     private float last_shoot_time;
     private bool canShoot = true;
+    public Lightbug.LaserMachine.LaserMachine laser;
 
     public GameObject EnemyBulletPrefab;
 
@@ -94,6 +95,8 @@ public class Enemy : MonoBehaviour
             Flip();
         laser_start_time = Time.realtimeSinceStartup-laser_durantion;
         last_shoot_time = Time.realtimeSinceStartup-shootingCooldown;
+        if(behaviour == behaviour_type.TURRET)
+            laser.m_active = false;
     }
 
      public static List<GameObject> Fisher_Yates_CardDeck_Shuffle (List<GameObject>aList) {
@@ -228,11 +231,15 @@ public class Enemy : MonoBehaviour
                         Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
                         //TODO: instantiate laser and deal damage to player
-                        //Lightbug.LaserMachine.LaserMachine laser = this.GetComponent<Lightbug.LaserMachine.LaserMachine>();
-                        //laser.
+                        GameObject dud = null;
+                        player.SendMessage("Damage",dud);
+                        
+                        laser.m_active = true;
                     }
-                } else if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
+                }
+                if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
                     //transform.rotation = new Quaternion();
+                    laser.m_active = false;
                 }
             }
         }
