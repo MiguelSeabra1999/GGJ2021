@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -380050553
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f,
     type: 3}
@@ -108,11 +108,12 @@ MonoBehaviour:
   spawning_cost: 1
   SmokePrefab: {fileID: 0}
   Path_list_root: {fileID: 0}
-  active: 1
+  unlocked: 1
   vision_range: 100
   laser_durantion: 10
   laser_charge_time: 5
   laser: {fileID: 0}
+  turret_sound_1: {fileID: 0}
   EnemyBulletPrefab: {fileID: 0}
   enemyFire: event:/SFX/enemyFire
   enemyHit: event:/SFX/gunHitEnemy

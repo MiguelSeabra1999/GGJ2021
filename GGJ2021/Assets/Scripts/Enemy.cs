@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
     public Lightbug.LaserMachine.LaserMachine laser;
     Vector3 vecToobj_turret;
     public AudioSource turret_sound_1;
+    public bool turret_flip=false;
 
     public GameObject EnemyBulletPrefab;
 
@@ -259,35 +260,40 @@ public class Enemy : MonoBehaviour
                 var obj = player.transform;
                 if (unlocked && (Time.realtimeSinceStartup-laser_start_time)> laser_durantion && Vector3.Distance(player.transform.position, transform.position) < vision_range)
                 {
-                    Vector3 vecToobj = new Vector3(obj.position.x - this.transform.position.x, obj.position.y - this.transform.position.y, obj.position.z - this.transform.position.z);
+
+                    animator.SetBool("Player_in_sight", true);
+                    Vector3 vecToobj = new Vector3(obj.position.x - this.transform.GetChild(0).position.x, obj.position.y - this.transform.GetChild(0).position.y, obj.position.z - this.transform.GetChild(0).position.z);
                     //Debug.DrawLine(obj.position, this.transform.position, Color.red, 3f);
                     float angle = Vector3.Angle(Vector3.right, vecToobj);
                     //Vector3 vecToobj_norm = vecToobj.normalized;
                     
                     //Debug.Log(vecToobj);
                     //Debug.Log(angle);
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, vecToobj, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
+                    RaycastHit2D hit = Physics2D.Raycast(this.transform.GetChild(0).position, vecToobj, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
                     //Debug.DrawRay(transform.position, vecToobj, Color.green);
                     if (hit && hit.collider != null && hit.collider.tag == player.tag)
                     {
-                        Vector3 myLocation = transform.position;
+                        Vector3 myLocation = this.transform.GetChild(0).position;
                         Vector3 targetLocation = obj.position;
                         targetLocation.z = myLocation.z; // ensure there is no 3D rotation by aligning Z position
                         
                         // vector from this object towards the target location
                         Vector3 vectorToTarget = targetLocation - myLocation;
                         // rotate that vector by 90 degrees around the Z axis
-                        Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 90) * vectorToTarget;
+                        Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, -90) * vectorToTarget;
                         
                         // get the rotation that points the Z axis forward, and the Y axis 90 degrees away from the target
                         // (resulting in the X axis facing the target)
                         Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
                         
                         // changed this from a lerp to a RotateTowards because you were supplying a "speed" not an interpolation value
-                        transform.rotation = targetRotation;//Quaternion.RotateTowards(transform.rotation, targetRotation, 5 * Time.deltaTime);
+                        transform.GetChild(0).rotation = targetRotation;//Quaternion.RotateTowards(transform.rotation, targetRotation, 5 * Time.deltaTime);
+                        if(turret_flip){
+                            transform.GetChild(0).Rotate(new Vector3(180,0,0), Space.Self);
+                        }
 
 
-                        Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
+                        Debug.DrawLine(this.transform.GetChild(0).position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
                         
                         laser.enabled=true;
@@ -302,11 +308,14 @@ public class Enemy : MonoBehaviour
 
                         unlocked = false;
                         vecToobj_turret = vecToobj;
+                        animator.SetTrigger("Charge");
                         this.StartCoroutine(laserDmg());
                         //Invoke("chargedLaser",laser_charge_time);
                         //Invoke("disableLaser",laser_durantion);
                         
                     }
+                } else {
+                    animator.SetBool("Player_in_sight", false);
                 }
                 if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
                     //transform.rotation = new Quaternion();
@@ -342,7 +351,8 @@ public class Enemy : MonoBehaviour
         chargedLaser();
         float start_time = Time.realtimeSinceStartup;
         while (!unlocked && (Time.realtimeSinceStartup-start_time) < (laser_durantion-laser_charge_time)){
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, vecToobj_turret, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
+            Debug.Log("Laser tentative");
+            RaycastHit2D hit = Physics2D.Raycast(this.transform.GetChild(0).position, vecToobj_turret, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
             //Debug.DrawRay(transform.position, vecToobj, Color.green);
             if (hit && hit.collider != null && player && hit.collider.tag == player.tag)
             {
@@ -358,6 +368,24 @@ public class Enemy : MonoBehaviour
     private void Flip()
     {
    //  Debug.Log("Flip");
+
+        if(behaviour == behaviour_type.TURRET){
+        
+            // if(transform.localRotation.eulerAngles.y == 0 )
+            // {
+            //     transform.localRotation =  Quaternion.Euler(0,180,0); 
+            
+            // }
+            // else 
+            // {
+            //     transform.localRotation =  Quaternion.Euler(0,0,0); 
+            
+            // }
+
+            return;
+        }
+
+
         if(transform.rotation.eulerAngles.y == 0 )
         {
             transform.rotation =  Quaternion.Euler(0,180,0); 
