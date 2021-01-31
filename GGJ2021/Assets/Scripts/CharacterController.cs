@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 
 
@@ -37,6 +39,19 @@ public class CharacterController : MonoBehaviour
 
     public GameObject BulletPrefab;
     public float BulletSpawnOffset = 50;
+<<<<<<< Updated upstream
+=======
+
+    //Audio
+    [FMODUnity.EventRef]
+    public string jumpSFX = string.Empty;
+    [FMODUnity.EventRef]
+    public string landSFX = string.Empty;
+    [FMODUnity.EventRef]
+    public string walkSFX = string.Empty;
+
+    [HideInInspector]public SpriteRenderer[] sprites;
+>>>>>>> Stashed changes
     void Start()
     {
         keyBindings = new KeyBindings(this.gameObject);
@@ -71,7 +86,11 @@ public class CharacterController : MonoBehaviour
 
         if(keyBindings.Keys["Jump"] && isGrounded)
             Jump();
+<<<<<<< Updated upstream
         if(keyBindings.Keys["Shoot"])
+=======
+        if (keyBindings.Keys["Shoot"] && canShoot)
+>>>>>>> Stashed changes
             Shoot();
         if(keyBindings.Keys["Dodge"])
             Dash();
@@ -109,7 +128,25 @@ public class CharacterController : MonoBehaviour
         
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
          isGrounded = false;
+
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(jumpSFX);
     }
+<<<<<<< Updated upstream
+=======
+    private void Jump(float mod)
+    {
+        if(facingForward)
+            jumpDir = 1;
+        else    
+            jumpDir = -1;
+        
+         rb.AddForce(jump * jumpForce * mod, ForceMode2D.Impulse);
+         isGrounded = false;
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(jumpSFX);
+    }
+>>>>>>> Stashed changes
 
     private void Dash()
     {
@@ -182,6 +219,8 @@ public class CharacterController : MonoBehaviour
     {
         Debug.Log("Ground");
         isGrounded = true;
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(landSFX);
     }
 
     private void TouchWall()
