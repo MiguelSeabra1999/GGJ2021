@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
 
 
     private CharacterController player;
-
+    private Animator animator;
 
     // behaviour_type.PATROL
     protected Transform[] points;
@@ -31,6 +31,8 @@ public class Enemy : MonoBehaviour
     protected Pathfinding.AIDestinationSetter agent;
     protected Pathfinding.AILerp ai_lerp;
     public GameObject Path_list_root;
+
+    
 
 
     // behaviour_type.ALWAYS_FORWARD
@@ -50,9 +52,12 @@ public class Enemy : MonoBehaviour
 
     void Start () {
 
+
         GameObject P = GameObject.FindGameObjectWithTag("Player");
         if(P)
             player = P.GetComponent<CharacterController>();
+
+        animator = GetComponent<Animator>();
         // we always setup if there is points defined, so we can change behaviour at runtime if needed
         agent = GetComponent<Pathfinding.AIDestinationSetter>();
         ai_lerp = GetComponent<Pathfinding.AILerp>();
@@ -85,8 +90,8 @@ public class Enemy : MonoBehaviour
             GotoNextPoint();
         }
 
-        // if(Random.Range(0f,1f) > 0.5f)
-        //     speed = speed*-1;
+        if(Random.Range(0f,1f) > 0.5f)
+            Flip();
         laser_start_time = Time.realtimeSinceStartup-laser_durantion;
         last_shoot_time = Time.realtimeSinceStartup-shootingCooldown;
     }
@@ -137,6 +142,7 @@ public class Enemy : MonoBehaviour
     void FixedUpdate () {
         // Choose the next destination point when the agent gets
         // close to the current one.
+        if(HP<=0)return;
         if (behaviour == behaviour_type.PATROL){
             ai_lerp.speed = speed;
             if(agent.target != null && Vector3.Distance(transform.position, agent.target.position) < 2f){
@@ -230,14 +236,43 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void Flip()
+    {
+   //  Debug.Log("Flip");
+        if(transform.rotation.eulerAngles.y == 0 )
+        {
+            transform.rotation =  Quaternion.Euler(0,180,0); 
+          
+        }
+        else 
+        {
+            transform.rotation =  Quaternion.Euler(0,0,0); 
+         
+        }
+    }
+
+    private void Stomped()
+    {
+        if(behaviour == behaviour_type.ALWAYS_FORWARD)
+        {
+            gameObject.layer = 13;
+            animator.SetTrigger("Stomp");
+            Invoke("Die",0.7f);
+        }
+    }
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
         && (other.collider.gameObject.layer == 8 || other.collider.gameObject.layer == 7)
         ){
-            speed = speed*-1;
+            Flip();
         }
 
-        if(other.collider.gameObject.layer == 7)
+        if(other.collider.gameObject.layer == 7 && HP > 0)
             other.collider.gameObject.SendMessage("Damage", gameObject);
         
     }
