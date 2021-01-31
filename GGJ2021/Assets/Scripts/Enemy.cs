@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     private float laser_start_time;
     public float laser_durantion = 10f;
     public float laser_charge_time = 5f;
-    private float shootingCooldown = 1f;
+    private float shootingCooldown = 6f;
     private float last_shoot_time;
     private bool canShoot = true;
     public Lightbug.LaserMachine.LaserMachine laser;

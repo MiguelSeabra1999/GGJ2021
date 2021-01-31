@@ -275,6 +275,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}
+      propertyPath: vision_range
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
       propertyPath: spawning_cost
       value: 5
       objectReference: {fileID: 0}
@@ -289,6 +294,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 340194482568532686, guid: 17cd6572571e86546a80b28e84b9c321,
         type: 3}
+    - target: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: laser_charge_time
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5937751143581917839, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}
       propertyPath: m_Name

@@ -69,7 +69,10 @@ public class CharacterController : MonoBehaviour
     public GameObject ModulePrefab;
     public GameObject DustParticlePrefab;
     public GameObject LandDustParticlePrefab;
+
+    public GameObject SmokeBombPrefab;
     public float BulletSpawnOffset = 50;
+    private Animator animator;
 
     [HideInInspector]public SpriteRenderer[] sprites;
 
@@ -87,11 +90,13 @@ public class CharacterController : MonoBehaviour
         keyBindings = new KeyBindings(this.gameObject);
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
         jump = new Vector3(0.0f, 2.0f, 0.0f);
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         postProcessor = GameObject.Find("PostProcessor");
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
         Debug.Log(sprites.Length);
+        Instantiate(SmokeBombPrefab, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -103,8 +108,10 @@ public class CharacterController : MonoBehaviour
         CheckStomp();
         if(CheckGround())
             isGrounded = true;
-        else
+        else{
+            animator.Play("Jump");
             isGrounded = false;
+        }
         keyBindings.UpdateKeys();
         (float, bool) LookInfo = keyBindings.GetLookAngle();
         float lookAngle = LookInfo.Item1;
@@ -174,6 +181,7 @@ public class CharacterController : MonoBehaviour
     {
 //        Debug.Log("FF");
         //sound-jump
+        animator.SetTrigger("PreJump");
         if(facingForward)
             jumpDir = 1;
         else    
@@ -188,6 +196,7 @@ public class CharacterController : MonoBehaviour
 
     private void Jump(float mod)
     {
+        animator.Play("PreJump");
         //sound-OnEnemyHead
         if(facingForward)
             jumpDir = 1;
@@ -212,6 +221,7 @@ public class CharacterController : MonoBehaviour
     IEnumerator Dashing()
     {
   //      Debug.Log("coroutine");
+        animator.SetBool("Dodging", true);
         this.dashing = true;
         dashingDir = keyBindings.GetLookDir().normalized;
         if(isGrounded)
@@ -231,6 +241,7 @@ public class CharacterController : MonoBehaviour
         
         this.dashing = false;
         rb.velocity = Vector2.zero;
+         animator.SetBool("Dodging", false);
         Invoke("RestoreDash", dashingCooldown);
     }
     private void RestoreDash()
@@ -335,7 +346,7 @@ public class CharacterController : MonoBehaviour
         }
 
        // armJoint.transform.LookAt(transform.position + lookDir);
-        Quaternion targetRotationArm = Quaternion.Euler(0,0,lookAngle + 90);
+        Quaternion targetRotationArm = Quaternion.Euler(0,0,lookAngle );
      /*   if(lookingBack)
             targetRotationArm = Quaternion.Euler(0,0,-1*lookAngle - 90);*/
 
@@ -452,6 +463,8 @@ public class CharacterController : MonoBehaviour
         gameObject.layer = 14;
         float startTime = Time.time;
         float timePercent;
+        if(time == invincibilityTime)
+         animator.SetBool("Stuned",true);
        // yield return new WaitForSeconds(invincibilityTime);
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
         while(Time.time < startTime + time)
@@ -461,9 +474,13 @@ public class CharacterController : MonoBehaviour
             yield return new WaitForSeconds(blinkSpeed);
             SetSpriteActive(true,sprites);
             yield return new WaitForSeconds(blinkSpeed);
-            
+            if(time == invincibilityTime && animator.GetBool("Stuned"))
+                animator.SetBool("Stuned",false);
+
         }
 
+       /* if(time == invincibilityTime)
+         animator.SetBool("Stuned",false);*/
         isInvincible = false;
         gameObject.layer =7;
         //coll.enabled = true;
@@ -492,6 +509,8 @@ public class CharacterController : MonoBehaviour
             if(!isGrounded)
             {
                 //sound-landSound
+               
+                animator.Play("Walk");
                 FMODUnity.RuntimeManager.PlayOneShot(landSFX);
                 Instantiate(LandDustParticlePrefab, LandParticleSpawn.transform.position, Quaternion.identity);
             }
