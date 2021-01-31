@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
 
     private CharacterController player;
     private Animator animator;
+    public GameObject SmokePrefab;
 
     // behaviour_type.PATROL
     protected Transform[] points;
@@ -36,7 +37,7 @@ public class Enemy : MonoBehaviour
 
 
     // behaviour_type.ALWAYS_FORWARD
-
+    private bool hasLandedFirstTime = false;
     // behaviour_type.TURRET
 
     public bool active = true;
@@ -183,7 +184,21 @@ public class Enemy : MonoBehaviour
             }
         } else 
         if (behaviour == behaviour_type.ALWAYS_FORWARD){
-            transform.Translate(new Vector3(speed/10,0,0));
+            
+            bool grounded = CheckGround();
+            if( grounded != animator.GetBool("Grounded"))
+            {
+                animator.SetBool("Grounded", grounded);
+            }
+            if(grounded)
+            {
+                if(!hasLandedFirstTime)
+                    hasLandedFirstTime = true;
+                transform.Translate(new Vector3(speed/10,0,0));
+            }
+            else if(hasLandedFirstTime)
+                transform.Translate(new Vector3(speed/20,0,0));
+
         } else
         if (behaviour == behaviour_type.TURRET){
             var obj = player.transform;
@@ -251,11 +266,32 @@ public class Enemy : MonoBehaviour
             Invoke("Die",0.7f);
         }
     }
+
+    private void GetShot()
+    {
+        Instantiate(SmokePrefab, transform.position, Quaternion.identity);
+        Die();
+    }
     private void Die()
     {
         Destroy(gameObject);
     }
 
+    private bool CheckGround()
+    {
+       //return true;
+        float floorDist = 0.6f;
+        LayerMask mask = LayerMask.GetMask("Floor");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, floorDist, mask);
+        Debug.DrawRay(transform.position, -Vector3.up * floorDist,Color.blue);
+        if(hit.collider != null && hit.collider.gameObject.layer == 10)
+        {
+           // Debug.Log(hit.collider.gameObject.name);
+            return true;
+        }
+
+        return false;
+    }
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
         && (other.collider.gameObject.layer == 8 || other.collider.gameObject.layer == 7)

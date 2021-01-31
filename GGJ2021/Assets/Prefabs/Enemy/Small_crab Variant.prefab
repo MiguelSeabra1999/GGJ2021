@@ -190,6 +190,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: SmokePrefab
+      value: 
+      objectReference: {fileID: 859891160553126997, guid: c7e468b4ee61ec44fb82a7006945fef7,
+        type: 3}
     - target: {fileID: 5937751143581917839, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}
       propertyPath: m_Name
