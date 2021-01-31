@@ -572,7 +572,8 @@ public class CharacterController : MonoBehaviour
 
     private void OnDestroy() {
         GameObject score = GameObject.FindGameObjectWithTag("ScoreCount");
-        score.SendMessage("EndGame");
+        if(score!=null)
+            score.SendMessage("EndGame");
     }
 
 }
