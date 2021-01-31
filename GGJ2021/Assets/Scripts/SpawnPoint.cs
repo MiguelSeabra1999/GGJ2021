@@ -43,6 +43,7 @@ public class SpawnPoint : MonoBehaviour
     void Start()
     {
         if(activate_on_start) activate();
+        if(SpawnPositions.Count==0) SpawnPositions.Add(this.gameObject);
         
     }
 

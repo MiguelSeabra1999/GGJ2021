@@ -255,6 +255,26 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    private void Damage_null(GameObject other)
+    { 
+        if(isInvincible) return;
+            
+        Debug.Log("ouch");
+        PostProcessorInterface.DamageEffect(0.4f);
+        ModuleType type = keyBindings.RemoveRandomKey() ;
+        this.StartCoroutine(InvincibilityLifeCycle(invincibilityTime));
+        if(type == ModuleType.EMPTY || keyBindings.NoActiveKeys())
+        {
+            Destroy(gameObject);
+        }else
+        {
+            if(other.transform.position.x > transform.position.x)
+                SpawnModule(type ,false);
+            else 
+                SpawnModule(type ,true);
+        }
+    }
+
     private void SpawnModule(ModuleType type, bool invertDir)
     {
         Vector3 offset = ModuleOffSet;
