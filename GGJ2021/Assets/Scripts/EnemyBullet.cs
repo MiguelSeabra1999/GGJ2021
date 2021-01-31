@@ -20,8 +20,10 @@ public class EnemyBullet : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.gameObject.layer==LayerMask.NameToLayer("Player"))
+        if(other.gameObject.layer==LayerMask.NameToLayer("Player")){
             other.gameObject.SendMessage("Damage_null", this.gameObject);
+        }
+        Destroy(this.gameObject);
 
     }
 }

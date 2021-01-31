@@ -315,6 +315,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7406849682395454814, guid: 801994592bf80d74f8f625b13197fa8a,
         type: 3}
+      propertyPath: jumpSFX
+      value: event:/SFX/jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 7406849682395454814, guid: 801994592bf80d74f8f625b13197fa8a,
+        type: 3}
+      propertyPath: landSFX
+      value: event:/SFX/land
+      objectReference: {fileID: 0}
+    - target: {fileID: 7406849682395454814, guid: 801994592bf80d74f8f625b13197fa8a,
+        type: 3}
+      propertyPath: walkSFX
+      value: event:/SFX/land
+      objectReference: {fileID: 0}
+    - target: {fileID: 7406849682395454814, guid: 801994592bf80d74f8f625b13197fa8a,
+        type: 3}
       propertyPath: jumpForce
       value: 7
       objectReference: {fileID: 0}

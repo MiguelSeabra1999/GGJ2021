@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour
     private Vector3 turret_target;
     private float laser_start_time;
     public float laser_durantion = 10f;
+    public float laser_charge_time = 5f;
     private float shootingCooldown = 1f;
     private float last_shoot_time;
     private bool canShoot = true;
@@ -53,6 +54,12 @@ public class Enemy : MonoBehaviour
     public GameObject EnemyBulletPrefab;
 
     private Rigidbody2D rb;
+
+    //Audio
+    [FMODUnity.EventRef]
+    public string enemyFire = string.Empty;
+    [FMODUnity.EventRef]
+    public string enemyHit = string.Empty;
 
     void Start () {
 
@@ -195,9 +202,13 @@ public class Enemy : MonoBehaviour
                             //last_shoot_time = Time.realtimeSinceStartup;
                             canShoot = false;
                             Invoke("RestoreShoot", shootingCooldown);
+
+                            //Audio
+                            FMODUnity.RuntimeManager.PlayOneShot(enemyFire);
                         }
                         
                     }
+
                 }
             } else{
                 //transform.rotation = new Quaternion();
@@ -255,19 +266,39 @@ public class Enemy : MonoBehaviour
 
                         Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
-                        //TODO: instantiate laser and deal damage to player
-                        player.gameObject.SendMessage("Damage");
                         
                         laser.m_active = true;
+                        laser.seconds_to_disable = laser_durantion;
+                        laser.turnoff_timer = true;
+                        laser.reset_turn_off_timer();
+                        laser.m_currentProperties.m_intermittent = true;
+                        laser.change_width(0, 0.1f);
+                        Invoke("chargedLaser",laser_charge_time);
+                        Invoke("disableLaser",laser_durantion);
+                        
                     }
                 }
                 if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
                     //transform.rotation = new Quaternion();
                     laser.m_active = false;
+                    laser.m_currentProperties.m_intermittent = false;
                 }
             }
         }
     }
+
+
+    public void disableLaser(){
+        laser.m_currentProperties.m_intermittent = false;
+        laser.m_active = false;
+    }
+
+    public void chargedLaser(){
+        laser.m_currentProperties.m_intermittent = false;
+        laser.change_width(0, 0.25f);
+        //player.gameObject.SendMessage("Damage");
+    }
+
 
     private void Flip()
     {
@@ -305,9 +336,12 @@ public class Enemy : MonoBehaviour
 
     private void GetShot()
     {
-    
+        Instantiate(SmokePrefab, transform.position, Quaternion.identity);
         Die();
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(enemyHit);
     }
+
     private void Die()
     {
         Instantiate(SmokePrefab, transform.position, Quaternion.identity);
@@ -329,6 +363,7 @@ public class Enemy : MonoBehaviour
 
         return false;
     }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
         && (other.collider.gameObject.layer == 8 || other.collider.gameObject.layer == 7)
