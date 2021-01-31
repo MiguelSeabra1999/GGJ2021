@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class DieAfterSetTime : MonoBehaviour
 {
+    public float time = 1;
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("Die", 1);
+        Invoke("Die", time);
     }
 
-    // Update is called once per frame
+    // Update is called once per frames
     void Update()
     {
         

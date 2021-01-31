@@ -23,7 +23,7 @@ public class PostProcessorInterface : MonoBehaviour
     void Start()
     {
         this.GetComponent<PostProcessVolume>().profile.TryGetSettings(out chromaticAberration);
-        this.GetComponent<PostProcessVolume>().profile.TryGetSettings(out vignette);
+        //this.GetComponent<PostProcessVolume>().profile.TryGetSettings(out vignette);
         this.GetComponent<PostProcessVolume>().profile.TryGetSettings(out grain);
         this.GetComponent<PostProcessVolume>().profile.TryGetSettings(out distortion);
         instance = this;

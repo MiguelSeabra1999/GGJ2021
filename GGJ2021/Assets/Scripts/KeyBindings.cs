@@ -16,8 +16,8 @@ using UnityEngine;
         public Dictionary<string, bool> KeysActive = new Dictionary<string, bool>() {
             {"Shoot", true },
             {"Dodge", true },
-            {"Jump", true },
-            {"Movement", true }
+            {"Jump", true }
+            //{"Movement", true }
         };
 
         private float cameraDif;
@@ -28,7 +28,7 @@ using UnityEngine;
         public KeyBindings(GameObject player)
         {
             this.player = player;
-            camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            camera = GameObject.FindGameObjectWithTag("secondCam").GetComponent<Camera>();
         }
         public void UpdateKeys()
         {
@@ -43,9 +43,9 @@ using UnityEngine;
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
             //float vertical = Input.GetAxisRaw("Vertical");
-            if(KeysActive["Movement"])
+          //  if(KeysActive["Movement"])
                 return new Vector3(horizontal, 0f, 0f).normalized;
-            return Vector3.zero;
+           // return Vector3.zero;
         }
 
         public Vector3 GetLookDir()
@@ -79,7 +79,7 @@ using UnityEngine;
 
         private bool CanRemove(string key)
         {
-            if(key == "Movement")
+            /*if(key == "Movement")
             {
                 if(!KeysActive["Dodge"])
                     return false;
@@ -91,9 +91,9 @@ using UnityEngine;
                 if(!KeysActive["Movement"])
                     return false;
                 
-            }
-            if(key != "Movement" && KeysActive["Movement"] && CountActiveKeys() == 2)
-                return false;
+            }*/
+          /*  if(key != "Movement" && KeysActive["Movement"] && CountActiveKeys() == 2)
+                return false;*/
             
             return true;
         }
@@ -152,9 +152,9 @@ using UnityEngine;
             ModuleType returnType = ModuleType.EMPTY;
             switch(code)
                         {
-                                case "Movement":
+                               /* case "Movement":
                                     returnType = ModuleType.MOVEMENT;
-                                    break;
+                                    break;*/
                         
                                 case "Dodge":
                                     returnType =  ModuleType.DASH;

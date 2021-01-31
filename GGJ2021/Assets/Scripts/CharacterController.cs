@@ -8,6 +8,7 @@ public class CharacterController : MonoBehaviour
 {
     // Start is called before the first frame update
 
+
     private Camera m_camera;
     private GameObject postProcessor;
     public bool camera_follow = true;
@@ -25,6 +26,7 @@ public class CharacterController : MonoBehaviour
     public float aimSpeed = 15;
     public float dashTime = 0.5f;
     public float dashSpeedup = 1.5f;
+    public float dashInvincibilityTime = 0.2f;
 
     public float midairDirecitonChangeSpeed = 0.3f;
 
@@ -58,9 +60,13 @@ public class CharacterController : MonoBehaviour
     public GameObject armJoint;
 
     public GameObject GunPoint;
+    public GameObject ParticleSpawn;
+    public GameObject LandParticleSpawn;
 
     public GameObject BulletPrefab;
     public GameObject ModulePrefab;
+    public GameObject DustParticlePrefab;
+    public GameObject LandDustParticlePrefab;
     public float BulletSpawnOffset = 50;
 
     [HideInInspector]public SpriteRenderer[] sprites;
@@ -140,6 +146,10 @@ public class CharacterController : MonoBehaviour
 
                 this.transform.Translate(-1*dir.x  ,0,0);
             }
+
+            if(isGrounded && Random.Range(0f,1f) < 0.02f )
+                Instantiate(DustParticlePrefab, ParticleSpawn.transform.position, Quaternion.identity);
+
     }
     private void Shoot()
     {
@@ -202,6 +212,7 @@ public class CharacterController : MonoBehaviour
     }
     private void RestoreDash()
     {
+        this.StartCoroutine(InvincibilityLifeCycle(dashInvincibilityTime));
         canDash = true;
     }
 
@@ -220,7 +231,7 @@ public class CharacterController : MonoBehaviour
 
     private void Damage(GameObject other)
     {
-        if(dashing)
+        if(dashing && other != null)
         {
             SendDamage(other, 0.5f);
             return;
@@ -231,7 +242,7 @@ public class CharacterController : MonoBehaviour
         Debug.Log("ouch");
         PostProcessorInterface.DamageEffect(0.4f);
         ModuleType type = keyBindings.RemoveRandomKey() ;
-        this.StartCoroutine(InvincibilityLifeCycle());
+        this.StartCoroutine(InvincibilityLifeCycle(invincibilityTime));
         if(type == ModuleType.EMPTY || keyBindings.NoActiveKeys())
         {
             Destroy(gameObject);
@@ -382,12 +393,15 @@ public class CharacterController : MonoBehaviour
        // float sin = Mathf.Asin(diff.y)*Mathf.Rad2Deg;
        Debug.Log(diff.x);
         if(Mathf.Abs(diff.x) < 0.5f)
+        {
+            
             return true;
+        }
         return false;
     }
 
 
-    IEnumerator InvincibilityLifeCycle()
+    IEnumerator InvincibilityLifeCycle(float time)
     {
         isInvincible = true;
         gameObject.layer = 14;
@@ -395,9 +409,9 @@ public class CharacterController : MonoBehaviour
         float timePercent;
        // yield return new WaitForSeconds(invincibilityTime);
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        while(Time.time < startTime + invincibilityTime)
+        while(Time.time < startTime + time)
         {
-            timePercent =(Time.time - startTime)  / invincibilityTime;
+            timePercent =(Time.time - startTime)  / time;
             SetSpriteActive(false, sprites);
             yield return new WaitForSeconds(blinkSpeed);
             SetSpriteActive(true,sprites);
@@ -430,6 +444,8 @@ public class CharacterController : MonoBehaviour
         if(hit.collider != null && hit.collider.gameObject.layer == 10)
         {
            // Debug.Log(hit.collider.gameObject.name);
+            if(!isGrounded)
+                Instantiate(LandDustParticlePrefab, LandParticleSpawn.transform.position, Quaternion.identity);
             return true;
         }
 
