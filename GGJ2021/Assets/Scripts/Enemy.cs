@@ -228,6 +228,8 @@ public class Enemy : MonoBehaviour
                         Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
                         //TODO: instantiate laser and deal damage to player
+                        //Lightbug.LaserMachine.LaserMachine laser = this.GetComponent<Lightbug.LaserMachine.LaserMachine>();
+                        //laser.
                     }
                 } else if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
                     //transform.rotation = new Quaternion();
