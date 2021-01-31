@@ -9,7 +9,7 @@ namespace Lightbug.LaserMachine
 
 public class LaserMachine : MonoBehaviour {
 
-    struct LaserElement 
+    public struct LaserElement 
     {
         public Transform transform;        
         public LineRenderer lineRenderer;
@@ -17,7 +17,7 @@ public class LaserMachine : MonoBehaviour {
         public bool impact;
     };
 
-    List<LaserElement> elementsList = new List<LaserElement>();
+    public List<LaserElement> elementsList = new List<LaserElement>();
     
 
     [Header("External Data")]
@@ -30,17 +30,22 @@ public class LaserMachine : MonoBehaviour {
     [SerializeField] LaserProperties m_inspectorProperties = new LaserProperties();
     
 
-    LaserProperties m_currentProperties;// = new LaserProperties();
+    public LaserProperties m_currentProperties;// = new LaserProperties();
         
     float m_time = 0;
     public bool m_active = true;
-    bool m_assignLaserMaterial;
-    bool m_assignSparks;
+    public bool m_assignLaserMaterial;
+    public bool m_assignSparks;
+
+    public bool turnoff_timer=true;
+    public float seconds_to_disable=5f;
+    public float timer_start_time;
   		
     
 
     void OnEnable()
     {
+        timer_start_time = Time.realtimeSinceStartup;
         m_currentProperties = m_overrideExternalProperties ? m_inspectorProperties : m_data.m_properties;
         
 
@@ -97,7 +102,16 @@ public class LaserMachine : MonoBehaviour {
         }
         
 	}
-        
+
+    public void reset_turn_off_timer(){
+        timer_start_time = Time.realtimeSinceStartup;
+    }
+
+    public void change_width(int index, float width){
+        if(index>=elementsList.Count) return;
+        elementsList[index].lineRenderer.startWidth = width;
+        elementsList[index].lineRenderer.endWidth = width;
+    }
        
 	void Update () {
 
