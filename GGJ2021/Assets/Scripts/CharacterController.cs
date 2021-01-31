@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 
 
@@ -70,6 +72,16 @@ public class CharacterController : MonoBehaviour
     public float BulletSpawnOffset = 50;
 
     [HideInInspector]public SpriteRenderer[] sprites;
+
+
+    //Audio
+    [FMODUnity.EventRef]
+    public string jumpSFX = string.Empty;
+    [FMODUnity.EventRef]
+    public string landSFX = string.Empty;
+    [FMODUnity.EventRef]
+    public string walkSFX = string.Empty;
+
     void Start()
     {
         keyBindings = new KeyBindings(this.gameObject);
@@ -166,7 +178,11 @@ public class CharacterController : MonoBehaviour
         
          rb.AddForce(jump * jumpForce, ForceMode2D.Impulse);
          isGrounded = false;
+
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(jumpSFX);
     }
+
     private void Jump(float mod)
     {
         if(facingForward)
@@ -176,7 +192,10 @@ public class CharacterController : MonoBehaviour
         
          rb.AddForce(jump * jumpForce * mod, ForceMode2D.Impulse);
          isGrounded = false;
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(jumpSFX);
     }
+
 
     private void Dash()
     {
@@ -344,6 +363,8 @@ public class CharacterController : MonoBehaviour
     {
         Debug.Log("Ground");
         isGrounded = true;
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(landSFX);
     }
 
     private void TouchWall()

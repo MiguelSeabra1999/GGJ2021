@@ -55,6 +55,12 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    //Audio
+    [FMODUnity.EventRef]
+    public string enemyFire = string.Empty;
+    [FMODUnity.EventRef]
+    public string enemyHit = string.Empty;
+
     void Start () {
 
         rb = GetComponent<Rigidbody2D>();
@@ -196,9 +202,13 @@ public class Enemy : MonoBehaviour
                             //last_shoot_time = Time.realtimeSinceStartup;
                             canShoot = false;
                             Invoke("RestoreShoot", shootingCooldown);
+
+                            //Audio
+                            FMODUnity.RuntimeManager.PlayOneShot(enemyFire);
                         }
                         
                     }
+
                 }
             } else{
                 //transform.rotation = new Quaternion();
@@ -289,6 +299,7 @@ public class Enemy : MonoBehaviour
         //player.gameObject.SendMessage("Damage");
     }
 
+
     private void Flip()
     {
    //  Debug.Log("Flip");
@@ -325,9 +336,12 @@ public class Enemy : MonoBehaviour
 
     private void GetShot()
     {
-    
+        Instantiate(SmokePrefab, transform.position, Quaternion.identity);
         Die();
+        //Audio
+        FMODUnity.RuntimeManager.PlayOneShot(enemyHit);
     }
+
     private void Die()
     {
         Instantiate(SmokePrefab, transform.position, Quaternion.identity);
@@ -349,6 +363,7 @@ public class Enemy : MonoBehaviour
 
         return false;
     }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if(behaviour == behaviour_type.ALWAYS_FORWARD
         && (other.collider.gameObject.layer == 8 || other.collider.gameObject.layer == 7)
