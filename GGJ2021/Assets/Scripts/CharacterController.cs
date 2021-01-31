@@ -109,7 +109,8 @@ public class CharacterController : MonoBehaviour
         if(CheckGround())
             isGrounded = true;
         else{
-            animator.Play("Jump");
+            if( animator.GetCurrentAnimatorStateInfo(0).IsName("Walk") || animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") )
+                animator.Play("Jump");
             isGrounded = false;
         }
         keyBindings.UpdateKeys();
@@ -135,7 +136,9 @@ public class CharacterController : MonoBehaviour
         
         if(dir.magnitude > 0.01f)
             UpdateMovement(dir);
-
+        else
+            if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Stun") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge"))
+                animator.Play("Idle");
 
 
         if(keyBindings.Keys["Jump"] && isGrounded)
@@ -151,6 +154,8 @@ public class CharacterController : MonoBehaviour
     private void UpdateMovement(Vector3 dir)
     {
         //Debug.Log(dir.x);
+            if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Stun") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Dodge"))
+                animator.Play("Walk");
             if(!isGrounded && jumpDir == 1 && dir.x <0   ||  !isGrounded && jumpDir == -1 && dir.x >0 )
                  dir = dir*midairDirecitonChangeSpeed;
 
@@ -509,8 +514,8 @@ public class CharacterController : MonoBehaviour
             if(!isGrounded)
             {
                 //sound-landSound
-               
-                animator.Play("Walk");
+                if(animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+                    animator.Play("Idle");
                 FMODUnity.RuntimeManager.PlayOneShot(landSFX);
                 Instantiate(LandDustParticlePrefab, LandParticleSpawn.transform.position, Quaternion.identity);
             }
