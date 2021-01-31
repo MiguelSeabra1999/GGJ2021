@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
     private bool hasLandedFirstTime = false;
     // behaviour_type.TURRET
 
-    public bool active = true;
+    public bool unlocked = true;
     public float vision_range = 100f;
     private Vector3 turret_target;
     private float laser_start_time;
@@ -50,6 +50,8 @@ public class Enemy : MonoBehaviour
     private float last_shoot_time;
     private bool canShoot = true;
     public Lightbug.LaserMachine.LaserMachine laser;
+    Vector3 vecToobj_turret;
+    public AudioSource turret_sound_1;
 
     public GameObject EnemyBulletPrefab;
 
@@ -173,7 +175,7 @@ public class Enemy : MonoBehaviour
             }
             if(player){
                 var obj = player.transform;
-                if (active && Vector3.Distance(player.transform.position, transform.position) < vision_range)
+                if (unlocked && Vector3.Distance(player.transform.position, transform.position) < vision_range)
                 {
                     Vector3 vecToobj = new Vector3(obj.position.x - this.transform.position.x, obj.position.y - this.transform.position.y, obj.position.z - this.transform.position.z);
                     //Debug.DrawLine(obj.position, this.transform.position, Color.red, 3f);
@@ -236,7 +238,7 @@ public class Enemy : MonoBehaviour
         if (behaviour == behaviour_type.TURRET){
             if(player){
                 var obj = player.transform;
-                if (active && (Time.realtimeSinceStartup-laser_start_time)> laser_durantion && Vector3.Distance(player.transform.position, transform.position) < vision_range)
+                if (unlocked && (Time.realtimeSinceStartup-laser_start_time)> laser_durantion && Vector3.Distance(player.transform.position, transform.position) < vision_range)
                 {
                     Vector3 vecToobj = new Vector3(obj.position.x - this.transform.position.x, obj.position.y - this.transform.position.y, obj.position.z - this.transform.position.z);
                     //Debug.DrawLine(obj.position, this.transform.position, Color.red, 3f);
@@ -245,7 +247,7 @@ public class Enemy : MonoBehaviour
                     
                     //Debug.Log(vecToobj);
                     //Debug.Log(angle);
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, vecToobj, 500f, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, vecToobj, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
                     //Debug.DrawRay(transform.position, vecToobj, Color.green);
                     if (hit && hit.collider != null && hit.collider.tag == player.tag)
                     {
@@ -269,21 +271,28 @@ public class Enemy : MonoBehaviour
                         Debug.DrawLine(transform.position, player.transform.position + vecToobj*10, Color.red, laser_durantion);
                         laser_start_time = Time.realtimeSinceStartup;
                         
+                        laser.enabled=true;
                         laser.m_active = true;
                         laser.seconds_to_disable = laser_durantion;
                         laser.turnoff_timer = true;
                         laser.reset_turn_off_timer();
+                        
                         laser.m_currentProperties.m_intermittent = true;
+                        laser.m_currentProperties.m_intervalTime = 0.5f;
                         laser.change_width(0, 0.1f);
-                        Invoke("chargedLaser",laser_charge_time);
-                        Invoke("disableLaser",laser_durantion);
+
+                        unlocked = false;
+                        vecToobj_turret = vecToobj;
+                        this.StartCoroutine(laserDmg());
+                        //Invoke("chargedLaser",laser_charge_time);
+                        //Invoke("disableLaser",laser_durantion);
                         
                     }
                 }
                 if((Time.realtimeSinceStartup-laser_start_time) > laser_durantion){
                     //transform.rotation = new Quaternion();
-                    laser.m_active = false;
-                    laser.m_currentProperties.m_intermittent = false;
+                    //laser.m_active = false;
+                    //laser.m_currentProperties.m_intermittent = false;
                 }
             }
         }
@@ -293,12 +302,37 @@ public class Enemy : MonoBehaviour
     public void disableLaser(){
         laser.m_currentProperties.m_intermittent = false;
         laser.m_active = false;
+        laser.enabled=false;
+        unlocked = true;
+        Debug.Log("disabled turret");
+        turret_sound_1.enabled = false;
     }
 
     public void chargedLaser(){
         laser.m_currentProperties.m_intermittent = false;
-        laser.change_width(0, 0.25f);
+        laser.m_active = true;
+        laser.change_width(0, 0.35f);
         //player.gameObject.SendMessage("Damage");
+        Debug.Log("laser charged");
+        turret_sound_1.enabled = true;
+
+    }
+
+    public IEnumerator laserDmg(){
+        yield return new WaitForSeconds(laser_charge_time);
+        chargedLaser();
+        float start_time = Time.realtimeSinceStartup;
+        while (!unlocked && (Time.realtimeSinceStartup-start_time) < (laser_durantion-laser_charge_time)){
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, vecToobj_turret, vision_range, ~(LayerMask.GetMask("Enemy","Bullet","Enemy_Bullet")));
+            //Debug.DrawRay(transform.position, vecToobj, Color.green);
+            if (hit && hit.collider != null && player && hit.collider.tag == player.tag)
+            {
+                hit.collider.gameObject.SendMessage("Damage_null", this.gameObject);
+                Debug.Log("damaging player");
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        disableLaser();
     }
 
 
