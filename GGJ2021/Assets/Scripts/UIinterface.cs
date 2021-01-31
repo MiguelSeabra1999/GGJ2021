@@ -9,6 +9,10 @@ public class UIinterface : MonoBehaviour
     public GameObject jumpIcon;
     public GameObject shootIcon;
 
+    public GameObject dodgeIcon2;
+    public GameObject jumpIcon2;
+    public GameObject shootIcon2;
+
     private CharacterController playerScript;
 
 
@@ -22,17 +26,18 @@ public class UIinterface : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        CheckKey("Shoot", shootIcon);
-        CheckKey("Dodge", dodgeIcon);
-        CheckKey("Jump" , jumpIcon);
+        CheckKey("Shoot", shootIcon, shootIcon2);
+        CheckKey("Dodge", dodgeIcon, dodgeIcon2);
+        CheckKey("Jump" , jumpIcon, jumpIcon2);
     }
 
-    private void CheckKey( string key, GameObject image)
+    private void CheckKey( string key, GameObject image , GameObject image2)
     {
         bool keyState = playerScript.CheckKeybindings(key);
         if(keyState != image.activeInHierarchy)
         {
             image.SetActive(keyState);
+            image2.SetActive(!keyState);
         
         }
     }
