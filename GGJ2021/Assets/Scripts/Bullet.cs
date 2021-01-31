@@ -26,7 +26,8 @@ public class Bullet : MonoBehaviour
             Enemy target = other.gameObject.GetComponent<Enemy>();
             target.HP-=damage;
             if(target.HP<=0){
-                Destroy(target.gameObject);
+                target.gameObject.SendMessage("GetShot");
+              //  Destroy(target.gameObject);
             }
         }
 
