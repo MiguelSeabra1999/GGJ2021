@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 7724129572424105455}
   m_Layer: 9
   m_Name: Turret_base
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -747,7 +747,8 @@ MonoBehaviour:
   speed: 1.5
   HP: 2
   spawning_cost: 1
-  SmokePrefab: {fileID: 0}
+  SmokePrefab: {fileID: 859891160553126997, guid: c7e468b4ee61ec44fb82a7006945fef7,
+    type: 3}
   Path_list_root: {fileID: 0}
   unlocked: 1
   vision_range: 100
@@ -755,6 +756,7 @@ MonoBehaviour:
   laser_charge_time: 5
   laser: {fileID: 800798979330696819}
   turret_sound_1: {fileID: 839533522368653275}
+  turret_flip: 0
   EnemyBulletPrefab: {fileID: 0}
   enemyFire: event:/SFX/enemyFire
   enemyHit: event:/SFX/gunHitEnemy
