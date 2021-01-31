@@ -152,6 +152,25 @@ public class Enemy : MonoBehaviour
         destPoint = (destPoint + 1) % points.Length;
     }
 
+    public void resetPatrolPath(Vector3 pos, bool teleport){
+
+        attacking_player = false;
+
+        // Returns if no points have been set up
+        if (points.Length == 0)
+            return;
+
+        destPoint = 0;
+        // Set the agent to go to the currently selected destination.
+        agent.target = points[destPoint];
+
+        // Choose the next point in the array as the destination,
+        // cycling to the start if necessary.
+        destPoint = (destPoint + 1) % points.Length;
+        if(teleport)
+            ai_lerp.Teleport(pos);
+    }
+
     private void RestoreShoot()
     {
         canShoot = true;

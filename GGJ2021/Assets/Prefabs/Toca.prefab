@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7938745626146994078}
   - component: {fileID: 7938745626146994079}
   - component: {fileID: 7938745626146994077}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Toca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,8 +25,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7938745626146994064}
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -12.21, y: -8.89, z: -1.4295361}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.39, y: -6.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7938745626185396940}
@@ -47,7 +47,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 4}
+  m_Size: {x: 3, y: 5}
   m_Direction: 0
 --- !u!114 &7938745626146994077
 MonoBehaviour:

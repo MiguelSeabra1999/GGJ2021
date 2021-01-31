@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -123,7 +123,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5083705501561389494}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1e0e578dce52ff546a86d00ca55a86b2, type: 2}
   m_CullingMode: 0
@@ -170,6 +170,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FlipY
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917834, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917834, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5937751143581917834, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}

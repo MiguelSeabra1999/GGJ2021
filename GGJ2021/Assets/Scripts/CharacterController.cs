@@ -71,6 +71,8 @@ public class CharacterController : MonoBehaviour
     public GameObject LandDustParticlePrefab;
 
     public GameObject SmokeBombPrefab;
+    public ParticleSystem ReturnShotParticles;
+    public ParticleSystem ReturnDashParticles;
     public float BulletSpawnOffset = 50;
     private Animator animator;
 
@@ -251,12 +253,14 @@ public class CharacterController : MonoBehaviour
     }
     private void RestoreDash()
     {
+        ReturnDashParticles.Play();
         this.StartCoroutine(InvincibilityLifeCycle(dashInvincibilityTime));
         canDash = true;
     }
 
     private void RestoreShoot()
     {
+        ReturnShotParticles.Play();
         canShoot = true;
     }
 

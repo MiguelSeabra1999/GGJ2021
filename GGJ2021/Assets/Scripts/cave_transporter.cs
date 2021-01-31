@@ -24,6 +24,10 @@ public class cave_transporter : MonoBehaviour
     {
         if(other.gameObject.layer==LayerMask.NameToLayer("Enemy")){
             other.transform.position = destination.position;
+            Enemy en = other.gameObject.GetComponent<Enemy>();
+            if(en.behaviour == Enemy.behaviour_type.PATROL){
+                en.resetPatrolPath(destination.position, true);
+            }
         }
 
     }
