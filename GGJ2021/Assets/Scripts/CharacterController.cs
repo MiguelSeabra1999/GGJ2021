@@ -146,7 +146,8 @@ public class CharacterController : MonoBehaviour
 
                 this.transform.Translate(-1*dir.x  ,0,0);
             }
-
+            
+            //sound-walk;
             if(isGrounded && Random.Range(0f,1f) < 0.02f )
                 Instantiate(DustParticlePrefab, ParticleSpawn.transform.position, Quaternion.identity);
 
@@ -159,6 +160,7 @@ public class CharacterController : MonoBehaviour
     }   
     private void Jump()
     {
+        //sound-jump
         if(facingForward)
             jumpDir = 1;
         else    
@@ -169,6 +171,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Jump(float mod)
     {
+        //sound-OnEnemyHead
         if(facingForward)
             jumpDir = 1;
         else    
@@ -465,7 +468,10 @@ public class CharacterController : MonoBehaviour
         {
            // Debug.Log(hit.collider.gameObject.name);
             if(!isGrounded)
+            {
+                //sound-landSound
                 Instantiate(LandDustParticlePrefab, LandParticleSpawn.transform.position, Quaternion.identity);
+            }
             return true;
         }
 
