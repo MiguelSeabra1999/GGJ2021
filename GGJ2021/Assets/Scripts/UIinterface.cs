@@ -16,7 +16,7 @@ public class UIinterface : MonoBehaviour
     void Start()
     {
         playerScript = player.GetComponent<CharacterController>();
-        Debug.Log("Done");
+//        Debug.Log("Done");
     }
 
     // Update is called once per frame
