@@ -1,6 +1,5 @@
 
 
-<img src="Reference_Art/env_concept_1.png" width="700" >
 
 # Game Elements:
 
