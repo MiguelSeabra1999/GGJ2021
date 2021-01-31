@@ -555,7 +555,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 16.804995, y: -3.889336}
+  m_Offset: {x: 18.837297, y: -3.889336}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -566,7 +566,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.2503166, y: 8.778672}
+  m_Size: {x: 1.6788902, y: 8.778672}
   m_EdgeRadius: 0
 --- !u!4 &262727173
 Transform:
@@ -2356,6 +2356,24 @@ Transform:
   m_Father: {fileID: 443258893}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &435973910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 276212445003808239, guid: 5b1497087dac33f42bb772dc59fc4ec3,
+    type: 3}
+  m_PrefabInstance: {fileID: 276212443610433220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &435973916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435973910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ca4ddf4e3e17a4a807296b8510cd2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &443258892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3557,7 +3575,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 16.804995, y: -3.889336}
+  m_Offset: {x: 14.900002, y: -3.889336}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3568,7 +3586,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.2503166, y: 8.778672}
+  m_Size: {x: 1.4403276, y: 8.778672}
   m_EdgeRadius: 0
 --- !u!4 &1219603431
 Transform:
@@ -5324,7 +5342,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928693290}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5ca4ddf4e3e17a4a807296b8510cd2f, type: 3}
   m_Name: 
