@@ -158,7 +158,7 @@ public class CharacterController : MonoBehaviour
 
                 this.transform.Translate(-1*dir.x  ,0,0);
             }
-            
+            //FMODUnity.RuntimeManager.PlayOneShot(walkSFX);
             //sound-walk;
             if(isGrounded && Random.Range(0f,1f) < 0.02f )
                 Instantiate(DustParticlePrefab, ParticleSpawn.transform.position, Quaternion.identity);
@@ -172,6 +172,7 @@ public class CharacterController : MonoBehaviour
     }   
     private void Jump()
     {
+//        Debug.Log("FF");
         //sound-jump
         if(facingForward)
             jumpDir = 1;
@@ -367,7 +368,7 @@ public class CharacterController : MonoBehaviour
         Debug.Log("Ground");
         isGrounded = true;
         //Audio
-        FMODUnity.RuntimeManager.PlayOneShot(landSFX);
+        //FMODUnity.RuntimeManager.PlayOneShot(landSFX);
     }
 
     private void TouchWall()
@@ -470,7 +471,7 @@ public class CharacterController : MonoBehaviour
     
     private void SetSpriteActive(bool state, SpriteRenderer[] sprites)
     {
-        Debug.Log(sprites.Length);
+     //   Debug.Log(sprites.Length);
   
         foreach(SpriteRenderer sprite in sprites)
         {
@@ -481,7 +482,7 @@ public class CharacterController : MonoBehaviour
     private bool CheckGround()
     {
        //return true;
-        float floorDist = 1.1f;
+        float floorDist = 1.4f;
         LayerMask mask = LayerMask.GetMask("Floor");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, floorDist, mask);
         Debug.DrawRay(transform.position, -Vector3.up * floorDist,Color.blue);
@@ -491,6 +492,7 @@ public class CharacterController : MonoBehaviour
             if(!isGrounded)
             {
                 //sound-landSound
+                FMODUnity.RuntimeManager.PlayOneShot(landSFX);
                 Instantiate(LandDustParticlePrefab, LandParticleSpawn.transform.position, Quaternion.identity);
             }
             return true;

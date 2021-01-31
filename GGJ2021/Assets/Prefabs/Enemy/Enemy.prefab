@@ -105,7 +105,17 @@ MonoBehaviour:
   attacking_player: 0
   speed: 1.5
   HP: 1
+  spawning_cost: 1
+  SmokePrefab: {fileID: 0}
   Path_list_root: {fileID: 0}
+  active: 1
+  vision_range: 100
+  laser_durantion: 10
+  laser_charge_time: 5
+  laser: {fileID: 0}
+  EnemyBulletPrefab: {fileID: 0}
+  enemyFire: event:/SFX/enemyFire
+  enemyHit: event:/SFX/gunHitEnemy
 --- !u!114 &5937751143581917833
 MonoBehaviour:
   m_ObjectHideFlags: 0

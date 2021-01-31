@@ -65,8 +65,10 @@ public class Enemy : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         GameObject P = GameObject.FindGameObjectWithTag("Player");
-        if(P)
+        if(P){
+            P.BroadcastMessage("AddMe", gameObject);
             player = P.GetComponent<CharacterController>();
+        }
 
         animator = GetComponent<Animator>();
         // we always setup if there is points defined, so we can change behaviour at runtime if needed
@@ -202,7 +204,7 @@ public class Enemy : MonoBehaviour
                             //last_shoot_time = Time.realtimeSinceStartup;
                             canShoot = false;
                             Invoke("RestoreShoot", shootingCooldown);
-
+            
                             //Audio
                             FMODUnity.RuntimeManager.PlayOneShot(enemyFire);
                         }
@@ -317,6 +319,7 @@ public class Enemy : MonoBehaviour
 
     private void Stomped()
     {
+        
         if(behaviour == behaviour_type.ALWAYS_FORWARD || behaviour ==behaviour_type.PATROL)
         {
             gameObject.layer = 13;
@@ -336,10 +339,11 @@ public class Enemy : MonoBehaviour
 
     private void GetShot()
     {
+   
         Instantiate(SmokePrefab, transform.position, Quaternion.identity);
+        FMODUnity.RuntimeManager.PlayOneShot(enemyHit);
         Die();
         //Audio
-        FMODUnity.RuntimeManager.PlayOneShot(enemyHit);
     }
 
     private void Die()

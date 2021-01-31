@@ -199,7 +199,7 @@ PrefabInstance:
     - target: {fileID: 5937751143581917836, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}
       propertyPath: spawning_cost
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5937751143581917839, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}

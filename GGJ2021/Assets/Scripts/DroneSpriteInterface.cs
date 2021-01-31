@@ -26,13 +26,13 @@ public class DroneSpriteInterface : MonoBehaviour
         if(player.transform.position.x <transform.position.x && !inverted )
         {
             animator.SetTrigger("TurnAround");
-            Debug.Log("trun");
+           // Debug.Log("trun");
             inverted = true;
 
         }else if(player.transform.position.x >transform.position.x && inverted )
         {
             animator.SetTrigger("TurnAround");
-            Debug.Log("trun1");
+//            Debug.Log("trun1");
             inverted = false;  
         }
         if(player.transform.position.x >transform.position.x )
