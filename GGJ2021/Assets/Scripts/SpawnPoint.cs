@@ -23,6 +23,7 @@ public class SpawnPoint : MonoBehaviour
 
     public float timeBetweenWaves = 5f;
     public float countDown = 2f;
+    public float time_between_enemy_spawns = 1.0f;
 
     //public float searchCountdown = 1f; 
 
@@ -118,7 +119,8 @@ public class SpawnPoint : MonoBehaviour
  
          return aList;
      }
-    private static System.Random rng = new System.Random();  
+    private static System.Random rng = new System.Random();
+
     public  void Shuffle<T>(IList<T> list)  
     {  
         int n = list.Count;  
@@ -184,7 +186,7 @@ public class SpawnPoint : MonoBehaviour
         foreach (Enemy e in enemies_to_spawn)
         {
             SpawnEnemy(e);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(time_between_enemy_spawns);
         }
 
 

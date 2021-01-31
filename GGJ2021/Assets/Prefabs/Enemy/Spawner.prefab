@@ -43,12 +43,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb00e4a34be72564b8f47c92cf3d4570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 3635070705279884755, guid: a3c5120a0f5cf644db2465eab2ab6e9a,
-    type: 3}
+  EnemyPrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  SpawnPositions: []
   number_of_waves: 5
   enemy_per_wave: 3
   type: 1
-  timeBetweenWaves: 1.5
+  timeBetweenWaves: 2
   countDown: 2
   state: 1
   activate_on_start: 1
+  wait_for_wave_clear: 0
