@@ -414,4 +414,11 @@ public class Enemy : MonoBehaviour
         
     }
 
+    private void OnDestroy() {
+        GameObject score = GameObject.FindGameObjectWithTag("ScoreCount");
+        if(score == null)return;
+        UnityEngine.UI.Text txt = score.GetComponent<UnityEngine.UI.Text>(); 
+        txt.text = (int.Parse(txt.text) + 1).ToString();
+    }
+
 }

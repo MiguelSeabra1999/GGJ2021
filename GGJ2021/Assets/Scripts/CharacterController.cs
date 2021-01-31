@@ -186,7 +186,7 @@ public class CharacterController : MonoBehaviour
     {
 //        Debug.Log("FF");
         //sound-jump
-        animator.SetTrigger("PreJump");
+        animator.Play("PreJump");
         if(facingForward)
             jumpDir = 1;
         else    
@@ -272,7 +272,7 @@ public class CharacterController : MonoBehaviour
     {
         if(dashing && other != null)
         {
-            SendDamage(other, 0.5f);
+            SendDamage(other, 1f);
             return;
         }
 
@@ -296,7 +296,7 @@ public class CharacterController : MonoBehaviour
 
     private void Damage_null(GameObject other)
     { 
-        if(isInvincible) return;
+        if(isInvincible || dashing) return;
             
         Debug.Log("ouch");
         PostProcessorInterface.DamageEffect(0.4f);
@@ -564,6 +564,11 @@ public class CharacterController : MonoBehaviour
     public bool CheckKeybindings(string key)
     {
         return keyBindings.KeysActive[key];
+    }
+
+    private void OnDestroy() {
+        GameObject score = GameObject.FindGameObjectWithTag("ScoreCount");
+        score.SendMessage("EndGame");
     }
 
 }

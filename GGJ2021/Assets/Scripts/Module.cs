@@ -39,6 +39,25 @@ public class Module : MonoBehaviour
         
     }
 
+    public void SetRandomModuleType()
+    {
+        int rng = Random.Range(0,3);
+        switch(rng)
+        {
+            case 1:
+                SetModuleType(ModuleType.DASH);
+                return;
+
+            case 2: 
+                SetModuleType(ModuleType.JUMP);
+                return;
+            case 3: 
+                SetModuleType(ModuleType.SHOOT);
+                return;
+            
+        }
+    }
+
     public void SetModuleType(ModuleType type)
     {
         animator = this.GetComponent<Animator>();
