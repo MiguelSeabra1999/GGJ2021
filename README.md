@@ -1,87 +1,21 @@
 
+# Krali
 
-<img src="Reference_Art/env_concept_1.png" width="700" >
+<img src="Reference_Art/splash4.jpg" width="700" >
 
-# Game Elements:
+## About
 
-## Feels:
-- Eerie
-- Vastness / Void / Loneliness
-- 
+When exploring a world new to him, Krati finds an ancient robot civilization thought to be lost long ago. Trapped in ancient ruins. Each hit you take makes you lose part of yourself, and also one of your abilities. Search for them quickly, or you'll become unable to face the threat.
 
+---
 
-## Actions:
-- movement
-- jump
-- dash
-- shoot
+## Game Stills
 
------
+<img src="Reference_Art/game_still_1.jpg" width="700" >
 
-<img src="Reference_Art/enemy_ideas_2.png" width="500" >
-<img src="Reference_Art/small_crab.png" width="500" >
-
-## Enemies:
-- Small Crab
-    - Beginner enemy;
-    - Walks always forward (reversing direction when hitting a wall);
-    - contact damage;
-    - easy to kill swarms with dash; hard to kill with Shoot;
-    - More likely to drop movement and dash ability;
-- Patrol Drone
-    - easy to kill with Shoot;
-    - More likely to drop jump ability;
-- Turret
-    - hard to kill with Dash, easy to kill with Shoot;
-    - More likely to drop shooting ability;
-- Large Crab (tentative)
-    - hard to kill with Dash, hard to kill with Jump;
-    - Drops a random ability that the player is missing;
-
-## Events:
-- gain ability
-- drop ability
-    - by taking damage;
-- gain debuff   (delayed)
-    - by taking damage;
-- drop debuff   (delayed)
-- winning condition
-    - Reach final level end zone? Get all abilities?
-- game over condition and restart
-    - Lose all abilities
-    - Get stuck with not enough abilities to escape?
-
-## Player status UI/VFX
-- teclas
-- damage taken feedback
-- Ability help text?
-- Ability telegraph?
-
-## VFX
-- damage done feedback
-- ambient effects?
-
------
+---
+## Some concept art
 
 <img src="Reference_Art/Environment.jpg" width="500" >
-
-## Levels: 
-- Platform prefabs 
-- Obstacles/challenges: (Motor coordination / reactive)
-    - doors? 
-    - traps?
-    - puzzles?
-- Visuals:
-    - Parallax?
-- Levels:
-    - Level 1
-    - NPC ability exchange Level
-    - Level 2
-
-## Character animation:
-- shooting direction
-
-
-## Other:
-- main menu
-- pause menu
+<img src="Reference_Art/enemy_ideas_2.png" width="500" >
+<img src="Reference_Art/small_crab.png" width="500" >
