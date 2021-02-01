@@ -48,6 +48,7 @@ public class Radar : MonoBehaviour
         }
         for(int i = 0; i < targets.Count; i++)
         {
+            if(targets[i].Item1 == null)break;
             float mag = (targets[i].Item1.transform.position - transform.position).magnitude;
             if(mag >= MINDIST && mag <= MAXDIST && !targets[i].Item2)
             {
