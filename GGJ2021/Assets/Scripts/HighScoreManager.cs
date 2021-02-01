@@ -17,7 +17,7 @@ public class HighScoreManager : MonoBehaviour
     public GameObject turnOnAtEnd;
     void Start()
     {
-        path = "Assets/dontOpenOrEditThatWouldBeCheating.txt";
+        path = "dontOpenOrEditThatWouldBeCheating.txt";
         score = GameObject.FindGameObjectWithTag("ScoreCount");
         UnityEngine.UI.Text txt = score.GetComponent<UnityEngine.UI.Text>(); 
         hscore = GameObject.FindGameObjectWithTag("HighScoreText");

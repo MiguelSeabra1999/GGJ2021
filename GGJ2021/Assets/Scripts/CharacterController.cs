@@ -432,7 +432,7 @@ public class CharacterController : MonoBehaviour
                     if(CheckIfTouchingWithFeet(transform.position, point.point))*/
               /*  if(col.gameObject.layer ==10)
                             TouchGround();*/
-            if(col.gameObject.layer ==8 || col.gameObject.layer ==11)
+            if(col.gameObject.layer ==8 || col.gameObject.layer ==11 || col.gameObject.layer == 17)
                 TouchWall();
             if(col.gameObject.layer ==11)
                 CollectModule(col.gameObject);

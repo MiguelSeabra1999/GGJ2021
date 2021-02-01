@@ -8,6 +8,7 @@ public class ModuleRestore : MonoBehaviour
     public GameObject ModulePrefab;
     public int minTime = 5;
     public int maxTime = 20;
+    public GameObject spawnPoint = null;
     void Start()
     {
         StartCoroutine(LifeCycle());
@@ -20,11 +21,17 @@ public class ModuleRestore : MonoBehaviour
     }
     IEnumerator LifeCycle()
     {
+        GameObject newModule;
         while(true)
         {
             yield return new WaitForSeconds(Random.Range(minTime,maxTime));
-            GameObject newModule = Instantiate(ModulePrefab, transform.position, Quaternion.identity);
+            if(spawnPoint == null)
+                newModule = Instantiate(ModulePrefab, transform.position, Quaternion.identity);
+            else
+                newModule = Instantiate(ModulePrefab, spawnPoint.transform.position, Quaternion.identity);
+
             newModule.SendMessage("SetRandomModuleType");
+            newModule.GetComponent<Rigidbody2D>().gravityScale = 0;
         }
     }
 }

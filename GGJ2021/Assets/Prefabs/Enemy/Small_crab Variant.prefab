@@ -134,6 +134,16 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917831, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: m_Mass
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937751143581917831, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5937751143581917834, guid: cdb466b54efcfac48a8a8bcfd43e9cd1,
         type: 3}
       propertyPath: m_FlipX
